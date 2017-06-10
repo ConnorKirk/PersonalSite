@@ -12,3 +12,8 @@ tags: []
 
 <p>After creating the skeleton of the site using <code>blogdown</code>, my first goal is to get it up and running on netlify, using a free domain name. After I’ve achieved that, I’ll consider a custom domain name (that will be another post..)</p>
 <p>The <a href="https://bookdown.org/yihui/blogdown">blogdown book</a> contains the basics to get started, but I seem to have hit an error when netlify tries to build the site. Maybe creating a basic walkthrough tutorial from R project to netlify site would be a useful contribution (once I’ve fixed the problem)</p>
+<div id="update-1" class="section level1">
+<h1>Update 1</h1>
+<p>Success! If you’re reading this, then I’ve solved the problem.</p>
+<p>I’ll write a full post on how to go from project to netlify deployment, but in short, I had assumed that the default netlify - hugo build settings would work. In fact, in the netlify documentation it states that for using hugo versions 0.20 and above, you should add a build parameter <code>HUGO_VERSION</code> and the version you are using. You can find this using the <code>blogdown::hugo_version()</code> function.</p>
+</div>
