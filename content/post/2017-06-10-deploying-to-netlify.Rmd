@@ -1,0 +1,14 @@
+---
+title: Deploying to Netlify
+author: Connor Kirkpatrick
+date: '2017-06-10'
+slug: deploying-to-netlify
+categories:
+  - Tech
+tags: []
+---
+
+After creating the skeleton of the site using `blogdown`, my first goal is to get it up and running on netlify, using a free domain name. After I've achieved that, I'll consider a custom domain name (that will be another post..)
+
+
+The [blogdown book](https://bookdown.org/yihui/blogdown) contains the basics to get started, but I seem to have hit an error when netlify tries to build the site. Maybe creating a basic walkthrough tutorial from R project to netlify site would be a useful contribution (once I've fixed the problem)
