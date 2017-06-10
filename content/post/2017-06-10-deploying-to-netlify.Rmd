@@ -12,3 +12,11 @@ After creating the skeleton of the site using `blogdown`, my first goal is to ge
 
 
 The [blogdown book](https://bookdown.org/yihui/blogdown) contains the basics to get started, but I seem to have hit an error when netlify tries to build the site. Maybe creating a basic walkthrough tutorial from R project to netlify site would be a useful contribution (once I've fixed the problem)
+
+
+# Update 1
+
+Success! If you're reading this, then I've solved the problem.
+
+I'll write a full post on how to go from project to netlify deployment, but in short, I had assumed that the default netlify - hugo build settings would work. In fact, in the netlify documentation it states that for using hugo versions 0.20 and above, you should add a build parameter `HUGO_VERSION` and the version you are using.
+You can find this using the `blogdown::hugo_version()` function.
