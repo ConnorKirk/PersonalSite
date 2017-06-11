@@ -1,0 +1,14 @@
+---
+title: How to predict an election
+author: Connor Kirkpatrick
+date: '2017-06-11'
+slug: how-to-predict-an-election
+categories:
+  - Data Science
+tags: []
+draft: TRUE
+---
+
+Whilst the UK is digesting the results of the General Election this weekend, I went down a series of rabbit holes that led to this great article on how the exit polls are used to predict the election results.
+
+[Exit polling explained](http://www2.warwick.ac.uk/fac/sci/statistics/staff/academic-research/firth/exit-poll-explainer/)

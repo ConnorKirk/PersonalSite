@@ -1,0 +1,19 @@
+---
+title: Words of the Day
+author: Connor Kirkpatrick
+date: '2017-06-11'
+slug: words-of-the-day
+categories: []
+tags: []
+draft: TRUE
+---
+
+# Word 1
+
+*Sophistry* - Complex arguments made to support a point, but are misleading and false.
+
+```{r}
+
+4 + 6
+
+```
