@@ -1,0 +1,21 @@
+---
+title: "todo"
+author: "Connor Kirkpatrick"
+date: "10 June 2017"
+output: html_document
+---
+
+# To Do
+
+* Write up post on going from creating a project to deploying on netlify
+* Update about me section. See Yihui's own for a good example.
+* Update config settings. Currently using defaults
+* Investigate swapping to Cocoa or Goa Hugo Theme?
+* Study Hugo further
+
+
+# Post Ideas
+
+* Squash
+* Student Tuition Fee's
+* Cooking
