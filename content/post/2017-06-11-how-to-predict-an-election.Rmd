@@ -6,7 +6,7 @@ slug: how-to-predict-an-election
 categories:
   - Data Science
 tags: []
-draft: TRUE
+draft: FALSE
 ---
 
 Whilst the UK is digesting the results of the General Election this weekend, I went down a series of rabbit holes that led to this great article on how the exit polls are used to predict the election results.
