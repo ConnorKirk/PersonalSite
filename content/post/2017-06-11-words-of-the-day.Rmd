@@ -8,12 +8,11 @@ tags: []
 draft: TRUE
 ---
 
-# Word 1
+I came across two great new words today (in the Economist - Thanks Emily).
+I'm not sure I'll get the chance to use them in conversation any time soon..
 
-*Sophistry* - Complex arguments made to support a point, but are misleading and false.
+- __Sophistry__ 
+Complex arguments to support a point that are purposely misleading
 
-```{r}
-
-4 + 6
-
-```
+- __Sinecure__
+A position or status that offers finacial or other benefits for little or no work
