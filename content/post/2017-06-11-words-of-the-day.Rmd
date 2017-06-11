@@ -11,8 +11,8 @@ draft: TRUE
 I came across two great new words today (in the Economist - Thanks Emily).
 I'm not sure I'll get the chance to use them in conversation any time soon..
 
-- __Sophistry__ 
+## Sophistry 
 Complex arguments to support a point that are purposely misleading
 
-- __Sinecure__
+## Sinecure
 A position or status that offers finacial or other benefits for little or no work
