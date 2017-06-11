@@ -1,0 +1,21 @@
+---
+title: From New Project to Up and Running
+author: Connor Kirkpatrick
+date: '2017-06-11'
+slug: from-new-project-to-up-and-running
+categories:
+  - Tech
+tags:
+  - blogdown
+draft: TRUE
+---
+
+# Introduction
+
+# Prerequisites
+
+# Setting Up Blogdown
+
+# Creating first site
+
+# Deploying on Netlify

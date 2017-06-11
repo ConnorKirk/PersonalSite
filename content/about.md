@@ -10,4 +10,4 @@ This blog is my space for whatever crosses my mind or catches my interest.
 
 
 
-This site was created using the [**blogdown**](https://github.com/rstudio/blogdown) package created by Yihui Xie.
+This site was created using the [**blogdown**](https://github.com/rstudio/blogdown) package by Yihui Xie.
