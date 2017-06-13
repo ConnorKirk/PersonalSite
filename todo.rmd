@@ -8,8 +8,8 @@ output: html_document
 # To Do
 
 * Write up post on going from creating a project to deploying on netlify
-* Update about me section. See Yihui's own for a good example.
-* Update config settings. Currently using defaults
+* ~~Update about me section. See Yihui's own for a good example.~~
+* ~~Update config settings. Currently using defaults~~
 * Investigate swapping to Cocoa or Goa Hugo Theme?
 * Study Hugo further
 
@@ -19,3 +19,5 @@ output: html_document
 * Squash
 * Student Tuition Fee's
 * Cooking
+* Food (for pleasure) v Food (as a tool)
+

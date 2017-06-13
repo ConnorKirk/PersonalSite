@@ -9,7 +9,7 @@ draft: TRUE
 ---
 
 
-Recently, I was asked "How should we measure productivity" within the context of a customer services team. Here are the thoughts I put together.
+Recently, I was asked "How should we measure productivity?" within the context of a customer services team. Here are the thoughts I put together.
 
 
 # How do we define productivity?
@@ -25,28 +25,49 @@ The core function of the customer operations team is to respond to inbound custo
 * Time to respond to a query - Could this be part of the above?
 
 
-These would all need to be considered in a measure of productivity. 
+These could all be considered in a measure of productivity. 
 
-Let's start with a simple measure. We could measure productivity as the number of customer operations team required to respond to these engagements. ie 
+Let's start with a simple measure. We could measure productivity as the number of customer operations team required to respond to these engagements in a fixed time period.. ie 
 
-`Productivity = Number of Customer Engagements / Number of Customer Operations Team Members`
+`Productivity = Number of Customer Engagements resolved in one day / Number of Customer Operations Team Members`
 
 
 But this ignores some other factors. If we put weight with purely the number of engagements served by a team, we ignore a big factor - Quality. This is harder to quantify (which explains the number of overseas call centres). Not all customer services are equal. 
 
-Our current definition is naive. In fact, optimising for it could damage, not improve our goal, as we would modify behaviour and processes to improve throughput but not accounting for quality.
+Our current definition is naive. In fact, optimising for our measure could damage, not improve our goal, as we would modify behaviour and processes to improve throughput whilst not tracking for quality. If the customer services team knew they were purely judged on the number of customers queries engaged with, then they prioritise that ahead of other factors.
 
 # Other Factors to consider
 
-As we've discussed above, we can't just judge productivity on the number of engagements per team members. So what else do we need to consider?
+As we've discussed above, we there's more to consider for whilst measuring productivity.
 
 ## Quality
+
+### It's not what you say, but how you say it
+
+Two customers phone a helpdesk with the same problem. They both get their query resolved in a timely manner, yet one now has an improved opinion of the company, the other a worse opinion. The difference can be down to the team member they spoke to. One was patient, kind and clear, the other brisk, strained and opaque.
+
+### How do you track a feeling?
+
+It's tricky to track quality of customer service. You could try to measure it directly with tools such as sentiment analysis of what's being said (and the tone), but this is still unreliable (and a bit creepy).
+An easier way is to ask the customer! Either directly, with surveys, questions and the like, or indirectly. You could do this be seeing if they then post positive or negative things regarding the engagement, or by monitoring their activity on the company service. 
+
+### How does this relate to productivity again?
+
+- Customer Satisfaction needs to be considered in a productivity measure
+- Either as binary (Customer satsifcation > Target)
+- Or sliding scale 
 
 
 
 ## Number of Inbound Engagements
 
-## Time period
+- Example: Team of 10 customer service reps able to handle 1000 customer engagements per day.
+  But, the inbound number of queries is actually 1100. Should we track this in productivity?
+  
+- Argument For
+  
+- Argument Against
+  Well, if we know that we can handle 1000 engagements with 10 people, we would know we need 2 more people to cover capacity (plus some extra).
 
 
 
