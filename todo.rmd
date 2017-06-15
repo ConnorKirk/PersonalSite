@@ -20,4 +20,6 @@ output: html_document
 * Student Tuition Fee's
 * Cooking
 * Food (for pleasure) v Food (as a tool)
+* Making time for goals
+* Finding a hobby.
 
