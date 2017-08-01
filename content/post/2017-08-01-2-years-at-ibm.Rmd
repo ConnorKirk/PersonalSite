@@ -1,0 +1,49 @@
+---
+title: Two years at IBM
+author: Connor Kirkpatrick
+date: '2017-08-01'
+categories: ~
+tags:
+  - IBM
+slug: 2-years-at-ibm
+---
+
+
+# Two Years at IBM
+
+On July 27th 2017 I reached my two year anniversairy at IBM. Coincidentally, I had an internal interview the day previous. In it, I was asked "If you could go back to the beginning, what would you tell yourself?". I thought it was an interesting question (must be why it's now a cliche).
+
+My two years at IBM have had highs and lows. I don't think I could have avoided all of the lows, but I think with the right advice, I could have maybe shortened them. At the same time, there have been some lessons that I've heard before, but I haven't learnt until I've had the weight of my own experience to drive them home. I suppose that's the cruel part of learning from other people. You can listen, but you won't understand always.
+
+I suppose my IBM career can be simplified into a few broad strokes
+
+1. Burning out on my first project
+1. Moving to become more technical
+1. Getting involved with the *extracurricular activities*
+
+
+## Burning Out
+
+I was on my first project for nearly a year. It's only a year later that I can appreciate all that I learnt whilst on it. I took a lot of experience for granted at the time. TO try and avoid the experiences that taught me all of that would be silly, it's who I am now. But if I could message myself, I would advise the following:
+
+* Get help. Don't suffer in silence. If something isn't clear, ask. If they can't help, ask someone else. Keep asking.
+* Stand up for yourself. Everyone has an agenda (not in a machivellian aspect), everyone has their own problems, both in work and outside. People are great, but you shouldn't rely on them to solve your problems, or look out for yourself. I was in my first project for far longer than beneficial because I went with the flow to support other people, rather than insisting to move on.
+
+
+## Becoming more technical
+
+Soon after joining IBM, I decided I wanted to become *technical*. I'd looked on longingly at those with the ability to code, but I never believed I could do it. Since then, I've started following my interests. It's been stop-start, bumpy, disheartening, but slowly successful. I feel a bit like climbing to the top of the mountain, only to realise there's another peak behind, that's even further away. The more I learn, the more I discover I don't know. Finding the time to learn more is difficult, but it's taught me to start reflecting the quality and quantity of what I do. "Is this taking me towards my goals?".
+
+I'd tell myself
+
+* Yes you can do it! I wish I'd started earlier
+* It's okay to get distracted, feel overwhelmed. It takes time, practice and a bit of luck.
+
+## Getting Involved
+
+* Use giveback to my advantage.
+* Find opportunities that interest me
+  * Mentoring
+  * Data Analysis
+
+
