@@ -1,0 +1,42 @@
+---
+title: Learning about API's and R
+author: Connor Kirkpatrick
+date: '2017-08-02'
+slug: learning-about-api-s-and-r
+categories:
+  - Tech
+tags: []
+draft: TRUE
+---
+
+# API's in R
+
+Amanda from Rstudio recently hosted a very helpful Webinar on [API's in R](https://www.rstudio.com/resources/webinars/web-api-updates/). After watching it, I wanted to write down some of the key points and put them into practice.
+
+# Basics of API
+
+Ask the right question
+* Verbs
+# API Resources in R
+
+## Different packages available
+* httr
+  * Responses
+  * Authentication
+  * Content (and Parsing)
+  * headers
+  * status
+  
+* JSONlite and xml2
+  * See vignettes for both
+
+# Example API's to practice on
+
+* StarWars API
+* Open Movie Data Base
+* httpbin.org
+
+
+
+
+# Examples
