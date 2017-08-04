@@ -6,7 +6,6 @@ slug: learning-about-api-s-and-r
 categories:
   - Tech
 tags: []
-draft: TRUE
 ---
 
 # API's in R
@@ -15,28 +14,149 @@ Amanda from Rstudio recently hosted a very helpful Webinar on [API's in R](https
 
 # Basics of API
 
-Ask the right question
-* Verbs
+## Ask the right question
+
+
+An API (Application Program Interface) is a way for two programs to communicate. To do so, they need to speak the same __language__. If you ask an API a question it understands, it will respond. otherwise it will probably give you an error message.
+
+## What's the language?
+
+
+Web API's typically function through five "verbs" of the HTTP (Hyper Text Transfer Protocol)  
+1. GET - Equivalent to "reading" data.
+1. PUT - Equivalent to "update or modify" the data."
+1. POST - Used to "Create" data.
+1. PATCH
+1. DELETE - As you might guess, used to delete data.
+
+This helps you phrase your request correctly, but you'll still need more information! Whilst there may be common themes, every API is structured differently. To know what you can ask an API, and how to do so, you'll need to refer to it's documentation. This will describe it's "endpoints" that you can call. Think of an endpoint as a certain question or action you can request.  
+
+
 # API Resources in R
 
-## Different packages available
-* httr
-  * Responses
-  * Authentication
-  * Content (and Parsing)
-  * headers
-  * status
+When I first came across this, I thought to myself, this is great, but how do I actually make a request?
+
+Well, the most basic way to do so would be using `curl` (See - Url, get it?). This is a library tool for transferring data. But in R, there is a better way.
+
+`httr` is a package created for working with HTTP. It's structured around the HTTP verbs mentioned above, allowing you to easily make calls to URLs and then parse the responses. For an in depth resource, see [the `httr` website](http://httr.r-lib.org/).
+
+At the end of this, there a few examples of using the package.
+
+## HTPP Verbs
+
+As well as the 6 HTTP verbs, `httr` has some additional utilities to make your life easier. 
+
+##    Responses
+It can automatically parse responses (usually JSON or XML), though you may also wish to use the `JSONlite` or `xml2` package for more control when parsing.
+
+There are also utilites to check the response status of calls - `stop_for_status()`
+
+## Authentication
+
+It also tries to make OAuth authentication as smooth as possible, which I found to be the most offputting part whilst learning, with multiple demoes for Oauth1.0 and 2.0. Use it with the `Oauth_` collection of functions.
+
   
 * JSONlite and xml2
   * See vignettes for both
 
 # Example API's to practice on
 
-* StarWars API
-* Open Movie Data Base
-* httpbin.org
-
-
-
+* [StarWars API](https://swapi.co/) - This is a well structured API to practice on, allowing you to access information about characters, planets, vehicles and films from the StarWars films.
+* [Open Movie Data Base](http://www.omdbapi.com/) - Similar to IMDB, this contains information about movies
+* [httpbin](http://httpbin.org/)
 
 # Examples
+
+For a brief example, we will use the Star Wars API. As a starting point, check out [its documentation](https://swapi.co/documentation).
+
+It has a "Root" resource which we can call. The response of this provides information on the other resources available via the API.
+```{r}
+library(httr)
+library(dplyr)
+
+request <- GET("https://swapi.co/api")
+
+swcontent <- request$content
+
+httr::content(request)
+
+
+```
+
+Say we needed to check the names of all of the films, and we could only do it via this API.
+
+```{r}
+swfilms <- GET("https://swapi.co/api/films")
+
+filmscontent <- httr::content(swfilms)
+
+str(filmscontent, max.level = 2)
+```
+
+I'll save you from filling up an entire screen with the response. As we called the films endpoint without specifying a particular film, it's returned information on all of them! We can easily e
+
+With the handy map function from `purrr`, we can easily pull out just the film names.
+
+```{r}
+
+library(purrr)
+
+map_chr(filmscontent$results, "title")
+```
+
+
+## A Wookie thing
+
+I like wookies. Chewbacca is the highlight of Starwars for me. Let's find out more information about him. Checking the documentation (or the root resource), we can see there is a `people` endpoint. Let's use it to find the wookies.
+
+```{r}
+people <- GET("https://swapi.co/api/people")
+
+people_info <- content(people)
+
+str(people_info, max.level = 2)
+```
+
+There are 87 characters listed in the API. The responses come in pages. That's a lot to parse. Instead, we can search for Chewbacca by name!
+
+```{r}
+
+chewwie <- GET("https://swapi.co/api/people?search=chewbacca") %>% httr::content()
+
+
+# How many results?
+chewwie$count
+
+# Is it Chewwie?
+
+chewwie$results[[1]]$name
+
+# Yes it's Chewwie!
+
+
+```
+
+
+But what if we wanted to find more wookies? Part of the API response contains Chewwies species. This comes in the format of an URL, `r chewwie$results[[1]]$species`. At first this may seem a tad unhelpful. But it's infact very powerful, as it allows us to do the following.
+
+```{r}
+wookie_species <- chewwie$results[[1]]$species %>% as.character() %>% GET() %>% content()
+
+str(wookie_species)
+```
+
+There are two wookies listed in the API. One must be Chewbacca, but who is the other? Let's call their ID in the API to find out.
+
+```{r}
+mystery_wookie <- GET("https://swapi.co/api/people/80/") %>% content()
+
+mystery_wookie$name
+```
+
+# Easter Egg
+
+As a valuable example of reading the documentation, we can see that there are two response formats. JSON, and wookie? Let's see what we get. JSON is the default response type, but we can request wookie by adding the following to our request.
+```{r}
+GET("https://swapi.co/api/planets/1/?format=wookiee") %>% content()
+
+```

@@ -6,7 +6,6 @@ slug: learning-about-api-s-and-r
 categories:
   - Tech
 tags: []
-draft: TRUE
 ---
 
 
@@ -17,29 +16,273 @@ draft: TRUE
 </div>
 <div id="basics-of-api" class="section level1">
 <h1>Basics of API</h1>
-<p>Ask the right question * Verbs # API Resources in R</p>
-<div id="different-packages-available" class="section level2">
-<h2>Different packages available</h2>
+<div id="ask-the-right-question" class="section level2">
+<h2>Ask the right question</h2>
+<p>An API (Application Program Interface) is a way for two programs to communicate. To do so, they need to speak the same <strong>language</strong>. If you ask an API a question it understands, it will respond. otherwise it will probably give you an error message.</p>
+</div>
+<div id="whats-the-language" class="section level2">
+<h2>What’s the language?</h2>
+<p>Web API’s typically function through five “verbs” of the HTTP (Hyper Text Transfer Protocol)<br />
+1. GET - Equivalent to “reading” data. 1. PUT - Equivalent to “update or modify” the data.&quot; 1. POST - Used to “Create” data. 1. PATCH 1. DELETE - As you might guess, used to delete data.</p>
+<p>This helps you phrase your request correctly, but you’ll still need more information! Whilst there may be common themes, every API is structured differently. To know what you can ask an API, and how to do so, you’ll need to refer to it’s documentation. This will describe it’s “endpoints” that you can call. Think of an endpoint as a certain question or action you can request.</p>
+</div>
+</div>
+<div id="api-resources-in-r" class="section level1">
+<h1>API Resources in R</h1>
+<p>When I first came across this, I thought to myself, this is great, but how do I actually make a request?</p>
+<p>Well, the most basic way to do so would be using <code>curl</code> (See - Url, get it?). This is a library tool for transferring data. But in R, there is a better way.</p>
+<p><code>httr</code> is a package created for working with HTTP. It’s structured around the HTTP verbs mentioned above, allowing you to easily make calls to URLs and then parse the responses. For an in depth resource, see <a href="http://httr.r-lib.org/">the <code>httr</code> website</a>.</p>
+<p>At the end of this, there a few examples of using the package.</p>
+<div id="htpp-verbs" class="section level2">
+<h2>HTPP Verbs</h2>
+<p>As well as the 6 HTTP verbs, <code>httr</code> has some additional utilities to make your life easier.</p>
+</div>
+<div id="responses" class="section level2">
+<h2>Responses</h2>
+<p>It can automatically parse responses (usually JSON or XML), though you may also wish to use the <code>JSONlite</code> or <code>xml2</code> package for more control when parsing.</p>
+<p>There are also utilites to check the response status of calls - <code>stop_for_status()</code></p>
+</div>
+<div id="authentication" class="section level2">
+<h2>Authentication</h2>
+<p>It also tries to make OAuth authentication as smooth as possible, which I found to be the most offputting part whilst learning, with multiple demoes for Oauth1.0 and 2.0. Use it with the <code>Oauth_</code> collection of functions.</p>
 <ul>
-<li>httr</li>
-<li>Responses</li>
-<li>Authentication</li>
-<li>Content (and Parsing)</li>
-<li>headers</li>
-<li><p>status</p></li>
 <li>JSONlite and xml2</li>
-<li><p>See vignettes for both</p></li>
+<li>See vignettes for both</li>
 </ul>
 </div>
 </div>
 <div id="example-apis-to-practice-on" class="section level1">
 <h1>Example API’s to practice on</h1>
 <ul>
-<li>StarWars API</li>
-<li>Open Movie Data Base</li>
-<li>httpbin.org</li>
+<li><a href="https://swapi.co/">StarWars API</a> - This is a well structured API to practice on, allowing you to access information about characters, planets, vehicles and films from the StarWars films.</li>
+<li><a href="http://www.omdbapi.com/">Open Movie Data Base</a> - Similar to IMDB, this contains information about movies</li>
+<li><a href="http://httpbin.org/">httpbin</a></li>
 </ul>
 </div>
 <div id="examples" class="section level1">
 <h1>Examples</h1>
+<p>For a brief example, we will use the Star Wars API. As a starting point, check out <a href="https://swapi.co/documentation">its documentation</a>.</p>
+<p>It has a “Root” resource which we can call. The response of this provides information on the other resources available via the API.</p>
+<pre class="r"><code>library(httr)
+library(dplyr)</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.3.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>request &lt;- GET(&quot;https://swapi.co/api&quot;)
+
+swcontent &lt;- request$content
+
+httr::content(request)</code></pre>
+<pre><code>## $people
+## [1] &quot;https://swapi.co/api/people/&quot;
+## 
+## $planets
+## [1] &quot;https://swapi.co/api/planets/&quot;
+## 
+## $films
+## [1] &quot;https://swapi.co/api/films/&quot;
+## 
+## $species
+## [1] &quot;https://swapi.co/api/species/&quot;
+## 
+## $vehicles
+## [1] &quot;https://swapi.co/api/vehicles/&quot;
+## 
+## $starships
+## [1] &quot;https://swapi.co/api/starships/&quot;</code></pre>
+<p>Say we needed to check the names of all of the films, and we could only do it via this API.</p>
+<pre class="r"><code>swfilms &lt;- GET(&quot;https://swapi.co/api/films&quot;)
+
+filmscontent &lt;- httr::content(swfilms)
+
+str(filmscontent, max.level = 2)</code></pre>
+<pre><code>## List of 4
+##  $ count   : int 7
+##  $ next    : NULL
+##  $ previous: NULL
+##  $ results :List of 7
+##   ..$ :List of 14
+##   ..$ :List of 14
+##   ..$ :List of 14
+##   ..$ :List of 14
+##   ..$ :List of 14
+##   ..$ :List of 14
+##   ..$ :List of 14</code></pre>
+<p>I’ll save you from filling up an entire screen with the response. As we called the films endpoint without specifying a particular film, it’s returned information on all of them! We can easily e</p>
+<p>With the handy map function from <code>purrr</code>, we can easily pull out just the film names.</p>
+<pre class="r"><code>library(purrr)</code></pre>
+<pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.3.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;purrr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     contains, order_by</code></pre>
+<pre class="r"><code>map_chr(filmscontent$results, &quot;title&quot;)</code></pre>
+<pre><code>## [1] &quot;A New Hope&quot;              &quot;Attack of the Clones&quot;   
+## [3] &quot;The Phantom Menace&quot;      &quot;Revenge of the Sith&quot;    
+## [5] &quot;Return of the Jedi&quot;      &quot;The Empire Strikes Back&quot;
+## [7] &quot;The Force Awakens&quot;</code></pre>
+<div id="a-wookie-thing" class="section level2">
+<h2>A Wookie thing</h2>
+<p>I like wookies. Chewbacca is the highlight of Starwars for me. Let’s find out more information about him. Checking the documentation (or the root resource), we can see there is a <code>people</code> endpoint. Let’s use it to find the wookies.</p>
+<pre class="r"><code>people &lt;- GET(&quot;https://swapi.co/api/people&quot;)
+
+people_info &lt;- content(people)
+
+str(people_info, max.level = 2)</code></pre>
+<pre><code>## List of 4
+##  $ count   : int 87
+##  $ next    : chr &quot;https://swapi.co/api/people/?page=2&quot;
+##  $ previous: NULL
+##  $ results :List of 10
+##   ..$ :List of 16
+##   ..$ :List of 16
+##   ..$ :List of 16
+##   ..$ :List of 16
+##   ..$ :List of 16
+##   ..$ :List of 16
+##   ..$ :List of 16
+##   ..$ :List of 16
+##   ..$ :List of 16
+##   ..$ :List of 16</code></pre>
+<p>There are 87 characters listed in the API. The responses come in pages. That’s a lot to parse. Instead, we can search for Chewbacca by name!</p>
+<pre class="r"><code>chewwie &lt;- GET(&quot;https://swapi.co/api/people?search=chewbacca&quot;) %&gt;% httr::content()
+
+
+# How many results?
+chewwie$count</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code># Is it Chewwie?
+
+chewwie$results[[1]]$name</code></pre>
+<pre><code>## [1] &quot;Chewbacca&quot;</code></pre>
+<pre class="r"><code># Yes it&#39;s Chewwie!</code></pre>
+<p>But what if we wanted to find more wookies? Part of the API response contains Chewwies species. This comes in the format of an URL, <a href="https://swapi.co/api/species/3/" class="uri">https://swapi.co/api/species/3/</a>. At first this may seem a tad unhelpful. But it’s infact very powerful, as it allows us to do the following.</p>
+<pre class="r"><code>wookie_species &lt;- chewwie$results[[1]]$species %&gt;% as.character() %&gt;% GET() %&gt;% content()
+
+str(wookie_species)</code></pre>
+<pre><code>## List of 15
+##  $ name            : chr &quot;Wookiee&quot;
+##  $ classification  : chr &quot;mammal&quot;
+##  $ designation     : chr &quot;sentient&quot;
+##  $ average_height  : chr &quot;210&quot;
+##  $ skin_colors     : chr &quot;gray&quot;
+##  $ hair_colors     : chr &quot;black, brown&quot;
+##  $ eye_colors      : chr &quot;blue, green, yellow, brown, golden, red&quot;
+##  $ average_lifespan: chr &quot;400&quot;
+##  $ homeworld       : chr &quot;https://swapi.co/api/planets/14/&quot;
+##  $ language        : chr &quot;Shyriiwook&quot;
+##  $ people          :List of 2
+##   ..$ : chr &quot;https://swapi.co/api/people/13/&quot;
+##   ..$ : chr &quot;https://swapi.co/api/people/80/&quot;
+##  $ films           :List of 5
+##   ..$ : chr &quot;https://swapi.co/api/films/2/&quot;
+##   ..$ : chr &quot;https://swapi.co/api/films/7/&quot;
+##   ..$ : chr &quot;https://swapi.co/api/films/6/&quot;
+##   ..$ : chr &quot;https://swapi.co/api/films/3/&quot;
+##   ..$ : chr &quot;https://swapi.co/api/films/1/&quot;
+##  $ created         : chr &quot;2014-12-10T16:44:31.486000Z&quot;
+##  $ edited          : chr &quot;2015-01-30T21:23:03.074598Z&quot;
+##  $ url             : chr &quot;https://swapi.co/api/species/3/&quot;</code></pre>
+<p>There are two wookies listed in the API. One must be Chewbacca, but who is the other? Let’s call their ID in the API to find out.</p>
+<pre class="r"><code>mystery_wookie &lt;- GET(&quot;https://swapi.co/api/people/80/&quot;) %&gt;% content()
+
+mystery_wookie$name</code></pre>
+<pre><code>## [1] &quot;Tarfful&quot;</code></pre>
+</div>
+</div>
+<div id="easter-egg" class="section level1">
+<h1>Easter Egg</h1>
+<p>As a valuable example of reading the documentation, we can see that there are two response formats. JSON, and wookie? Let’s see what we get. JSON is the default response type, but we can request wookie by adding the following to our request.</p>
+<pre class="r"><code>GET(&quot;https://swapi.co/api/planets/1/?format=wookiee&quot;) %&gt;% content()</code></pre>
+<pre><code>## $whrascwo
+## [1] &quot;Traaoooooahwhwo&quot;
+## 
+## $rcooaoraaoahoowh_akworcahoowa
+## [1] &quot;23&quot;
+## 
+## $oorcrhahaoraan_akworcahoowa
+## [1] &quot;304&quot;
+## 
+## $waahrascwoaoworc
+## [1] &quot;10465&quot;
+## 
+## $oaanahscraaowo
+## [1] &quot;rarcahwa&quot;
+## 
+## $rrrcrahoahaoro
+## [1] &quot;1 caorawhwararcwa&quot;
+## 
+## $aoworcrcraahwh
+## [1] &quot;wawocworcao&quot;
+## 
+## $churcwwraoawo_ohraaoworc
+## [1] &quot;1&quot;
+## 
+## $akooakhuanraaoahoowh
+## [1] &quot;200000&quot;
+## 
+## $rcwocahwawowhaoc
+## $rcwocahwawowhaoc[[1]]
+## [1] &quot;acaoaoakc://cohraakah.oaoo/raakah/akwoooakanwo/1/&quot;
+## 
+## $rcwocahwawowhaoc[[2]]
+## [1] &quot;acaoaoakc://cohraakah.oaoo/raakah/akwoooakanwo/2/&quot;
+## 
+## $rcwocahwawowhaoc[[3]]
+## [1] &quot;acaoaoakc://cohraakah.oaoo/raakah/akwoooakanwo/4/&quot;
+## 
+## $rcwocahwawowhaoc[[4]]
+## [1] &quot;acaoaoakc://cohraakah.oaoo/raakah/akwoooakanwo/6/&quot;
+## 
+## $rcwocahwawowhaoc[[5]]
+## [1] &quot;acaoaoakc://cohraakah.oaoo/raakah/akwoooakanwo/7/&quot;
+## 
+## $rcwocahwawowhaoc[[6]]
+## [1] &quot;acaoaoakc://cohraakah.oaoo/raakah/akwoooakanwo/8/&quot;
+## 
+## $rcwocahwawowhaoc[[7]]
+## [1] &quot;acaoaoakc://cohraakah.oaoo/raakah/akwoooakanwo/9/&quot;
+## 
+## $rcwocahwawowhaoc[[8]]
+## [1] &quot;acaoaoakc://cohraakah.oaoo/raakah/akwoooakanwo/11/&quot;
+## 
+## $rcwocahwawowhaoc[[9]]
+## [1] &quot;acaoaoakc://cohraakah.oaoo/raakah/akwoooakanwo/43/&quot;
+## 
+## $rcwocahwawowhaoc[[10]]
+## [1] &quot;acaoaoakc://cohraakah.oaoo/raakah/akwoooakanwo/62/&quot;
+## 
+## 
+## $wwahanscc
+## $wwahanscc[[1]]
+## [1] &quot;acaoaoakc://cohraakah.oaoo/raakah/wwahanscc/5/&quot;
+## 
+## $wwahanscc[[2]]
+## [1] &quot;acaoaoakc://cohraakah.oaoo/raakah/wwahanscc/4/&quot;
+## 
+## $wwahanscc[[3]]
+## [1] &quot;acaoaoakc://cohraakah.oaoo/raakah/wwahanscc/6/&quot;
+## 
+## $wwahanscc[[4]]
+## [1] &quot;acaoaoakc://cohraakah.oaoo/raakah/wwahanscc/3/&quot;
+## 
+## $wwahanscc[[5]]
+## [1] &quot;acaoaoakc://cohraakah.oaoo/raakah/wwahanscc/1/&quot;
+## 
+## 
+## $oarcworaaowowa
+## [1] &quot;2014-12-09T13:50:49.641000Z&quot;
+## 
+## $wowaahaowowa
+## [1] &quot;2014-12-21T20:48:04.175778Z&quot;
+## 
+## $hurcan
+## [1] &quot;acaoaoakc://cohraakah.oaoo/raakah/akanrawhwoaoc/1/&quot;</code></pre>
 </div>
