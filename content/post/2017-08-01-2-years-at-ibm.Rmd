@@ -19,7 +19,7 @@ I suppose my IBM career can be simplified into a few broad strokes
 
 1. Burning out on my first project
 1. Moving to become more technical
-1. Getting involved with the *extracurricular activities*
+1. Getting involved with the **extracurricular activities**
 
 
 ## Burning Out
@@ -40,6 +40,7 @@ I'd tell myself
 * It's okay to get distracted, feel overwhelmed. It takes time, practice and a bit of luck.
 
 ## Getting Involved
+
 
 * Use giveback to my advantage.
 * Find opportunities that interest me
