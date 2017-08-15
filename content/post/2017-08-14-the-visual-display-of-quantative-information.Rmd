@@ -1,0 +1,86 @@
+---
+title: The Visual Display of Quantative Information
+author: Connor Kirkpatrick
+date: '2017-08-14'
+slug: the-visual-display-of-quantative-information
+categories: []
+tags: []
+draft: TRUE
+---
+
+
+# The Visual Display of Quantative Information by Edward Tufte
+
+## Summary
+
+Last weekend I was browsing my local when I was pleasantly surprised to come across "The Visual Display of Quantative Information" by Edward Tufte. Despite the dry sounding title, it's been highly recomendded to me. It's a beautiful book to look at, and a very informative read.
+
+Whilst common to us now, the idea of representating data in graphical format is a rather abstract one. Th book explores the history and significance of  it's development. Along the way, it presents some classic graphs and what makes them so good. These are distilled into fundamental ideas to consider when trying to represent data visually.
+
+THe format of the book is notable for it's clean and minimalist style. This is further conveyed by Tufte's instructions to strip away the ink on the page.
+
+## What I learnt
+
+* Each visualisation should have an intention. It should be clear to the reader
+* It should be accurate and proportional. Charts have the potential to misrepresent the data in many ways. It's your responsibility to avoid this.
+* The representation of data goes beyond bar charts, pie charts and scatter plots. Think about the data you wish to display. These forms of charts are common, but more is always possible.
+* Often less is more when it comes to charts. Every dot of ink on the page should have a purpose. Redundant ink distracts from your point.  Clever use of ink can leave more information being conveyed by less ink.
+
+
+## Summary
+
+This book warrants a re-read to extract all the learning. From my first pass, it's made me consider displaying data beyond the process of deciding what chart type fits best, to how do I want to convey the data. Some of my favourite charts in the book are unique to the data they are presenting. It takes more effort, but it produces far better results.
+
+
+
+## Practical Examples
+
+Included are a few practical examples inspired by the book.
+
+
+First, let's create a basic graph. As many have before us, we'll use the diamonds dataset included in the ggplot library.
+```{r}
+
+library(ggplot2)
+library(dplyr)
+
+
+str(diamonds)
+
+diamonds %>%
+ggplot(aes(x = carat, y = price)) + geom_point() +
+  xlab("Carat") +
+  ylab("Price")
+
+```
+
+
+This is a solid chart. It displays the data, you can see the outlines of the dataset. But how could it be improved?
+
+* The chart has turned into a mass of black. Whilst there is nothing wrong with black, it hides the true density of the points in it's area. Can we better convey the relative density of points in an area?
+  * To do this, we could change the alpha setting to reduce overplotting. Alternatively, we could try a different method of representing the data, such as a density plot. For this example, we'll reduce the alpha
+  
+  
+```{r}
+diamonds %>%
+ggplot(aes(x = carat, y = price)) + geom_point(alpha = 0.1) +
+  xlab("Carat") +
+  ylab("Price")
+
+```
+
+Ah, much better. But what else could be improved? What are the minimum and maximum values in the dataset? Currently we can't easily see these. Tufte suggests editing the axis to become range bars. With less ink, you convey more information (magic!).
+
+
+```{r}
+limits_carat <- diamonds %>%
+  summarise(min(carat), max(carat)) %>% as.vector()
+
+limits_price <- diamonds %>%
+  summarise(min = min(price), max = max(price)) %>% as.vector()
+
+diamonds %>%
+ggplot(aes(x = carat, y = price)) + geom_point(alpha = 0.1) +
+  xlab("Carat") +
+  ylab("Price") 
+```
