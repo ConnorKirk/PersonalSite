@@ -5,7 +5,6 @@ date: '2017-08-14'
 slug: the-visual-display-of-quantative-information
 categories: []
 tags: []
-draft: TRUE
 ---
 
 
@@ -34,5 +33,73 @@ draft: TRUE
 <div id="practical-examples" class="section level2">
 <h2>Practical Examples</h2>
 <p>Included are a few practical examples inspired by the book.</p>
+<p>First, let’s create a basic graph. As many have before us, we’ll use the diamonds dataset included in the ggplot library.</p>
+<pre class="r"><code>library(ggplot2)</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.3.2</code></pre>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.3.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>str(diamonds)</code></pre>
+<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    53940 obs. of  10 variables:
+##  $ carat  : num  0.23 0.21 0.23 0.29 0.31 0.24 0.24 0.26 0.22 0.23 ...
+##  $ cut    : Ord.factor w/ 5 levels &quot;Fair&quot;&lt;&quot;Good&quot;&lt;..: 5 4 2 4 2 3 3 3 1 3 ...
+##  $ color  : Ord.factor w/ 7 levels &quot;D&quot;&lt;&quot;E&quot;&lt;&quot;F&quot;&lt;&quot;G&quot;&lt;..: 2 2 2 6 7 7 6 5 2 5 ...
+##  $ clarity: Ord.factor w/ 8 levels &quot;I1&quot;&lt;&quot;SI2&quot;&lt;&quot;SI1&quot;&lt;..: 2 3 5 4 2 6 7 3 4 5 ...
+##  $ depth  : num  61.5 59.8 56.9 62.4 63.3 62.8 62.3 61.9 65.1 59.4 ...
+##  $ table  : num  55 61 65 58 58 57 57 55 61 61 ...
+##  $ price  : int  326 326 327 334 335 336 336 337 337 338 ...
+##  $ x      : num  3.95 3.89 4.05 4.2 4.34 3.94 3.95 4.07 3.87 4 ...
+##  $ y      : num  3.98 3.84 4.07 4.23 4.35 3.96 3.98 4.11 3.78 4.05 ...
+##  $ z      : num  2.43 2.31 2.31 2.63 2.75 2.48 2.47 2.53 2.49 2.39 ...</code></pre>
+<pre class="r"><code>diamonds %&gt;%
+ggplot(aes(x = carat, y = price)) + geom_point() +
+  xlab(&quot;Carat&quot;) +
+  ylab(&quot;Price&quot;)</code></pre>
+<p><img src="/post/2017-08-14-the-visual-display-of-quantative-information_files/figure-html/intial_plot-1.png" width="672" /></p>
+<p>This is a solid chart. It displays the data, you can see the outlines of the dataset. But how could it be improved?</p>
+<ul>
+<li>The chart has turned into a mass of black. Whilst there is nothing wrong with black, it hides the true density of the points in it’s area. Can we better convey the relative density of points in an area?</li>
+<li>To do this, we could change the alpha setting to reduce overplotting. Alternatively, we could try a different method of representing the data, such as a density plot. For this example, we’ll reduce the alpha</li>
+</ul>
+<pre class="r"><code>diamonds %&gt;%
+ggplot(aes(x = carat, y = price)) + geom_point(alpha = 0.1) +
+  xlab(&quot;Carat&quot;) +
+  ylab(&quot;Price&quot;)</code></pre>
+<p><img src="/post/2017-08-14-the-visual-display-of-quantative-information_files/figure-html/revised_plot-1.png" width="672" /></p>
+<p>Ah, much better. But what else could be improved? What are the minimum and maximum values in the dataset? Currently we can’t easily see these. Tufte suggests editing the axis to become range bars. With less ink, you convey more information (magic!).</p>
+<pre class="r"><code>library(ggthemes)</code></pre>
+<pre><code>## Warning: package &#39;ggthemes&#39; was built under R version 3.3.3</code></pre>
+<pre class="r"><code>diamonds %&gt;%
+ggplot(aes(x = carat, y = price)) + geom_point(alpha = 0.1) +
+  geom_rangeframe() +
+  xlab(&quot;Carat&quot;) +
+  ylab(&quot;Price&quot;) +
+  scale_x_continuous(breaks = extended_range_breaks()(diamonds$carat)) +
+  scale_y_continuous(breaks = extended_range_breaks()(diamonds$price)) + 
+  theme_tufte() </code></pre>
+<p><img src="/post/2017-08-14-the-visual-display-of-quantative-information_files/figure-html/tufte_theme_plot-1.png" width="672" /></p>
+<p>So what’s different in this plot?</p>
+<ul>
+<li>We’ve reduced the overplotting of the points by lowering their alpha level. It’s now more easy to see the density of the points.</li>
+<li>We’ve changed the axis into range bars. It’s now easy to read the range values for the data set</li>
+<li>We’ve stripped out the nonessential ink, such as the background and gridlines.</li>
+</ul>
+<p>To do this, we used a few tools included in the <code>ggtheme</code> package.</p>
+<ul>
+<li><code>geom_range()</code> to change the axis into range bars</li>
+<li><code>theme_tufte()</code> to remove the background and gridlines</li>
+<li><code>extended_range_breaks()</code> to create axis breaks that include the extreme values of the data.</li>
+</ul>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p><code>ggplot2</code> makes it very easy to produce good looking visualisations. But sometimes less is more. In the Visual Display of Quantative Information, Tufte demonstrates that with a bit of thought, plots can be made even more effective at conveying information. Rather than mixing data with a chart style and “mixing well”, we should envision the end product of what we wish to convey.</p>
 </div>
 </div>

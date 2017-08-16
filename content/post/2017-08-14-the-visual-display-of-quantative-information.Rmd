@@ -5,7 +5,6 @@ date: '2017-08-14'
 slug: the-visual-display-of-quantative-information
 categories: []
 tags: []
-draft: TRUE
 ---
 
 
@@ -39,7 +38,7 @@ Included are a few practical examples inspired by the book.
 
 
 First, let's create a basic graph. As many have before us, we'll use the diamonds dataset included in the ggplot library.
-```{r}
+```{r intial_plot}
 
 library(ggplot2)
 library(dplyr)
@@ -61,7 +60,7 @@ This is a solid chart. It displays the data, you can see the outlines of the dat
   * To do this, we could change the alpha setting to reduce overplotting. Alternatively, we could try a different method of representing the data, such as a density plot. For this example, we'll reduce the alpha
   
   
-```{r}
+```{r revised_plot}
 diamonds %>%
 ggplot(aes(x = carat, y = price)) + geom_point(alpha = 0.1) +
   xlab("Carat") +
@@ -72,15 +71,38 @@ ggplot(aes(x = carat, y = price)) + geom_point(alpha = 0.1) +
 Ah, much better. But what else could be improved? What are the minimum and maximum values in the dataset? Currently we can't easily see these. Tufte suggests editing the axis to become range bars. With less ink, you convey more information (magic!).
 
 
-```{r}
-limits_carat <- diamonds %>%
-  summarise(min(carat), max(carat)) %>% as.vector()
+```{r tufte_theme_plot}
+library(ggthemes)
 
-limits_price <- diamonds %>%
-  summarise(min = min(price), max = max(price)) %>% as.vector()
 
 diamonds %>%
 ggplot(aes(x = carat, y = price)) + geom_point(alpha = 0.1) +
+  geom_rangeframe() +
   xlab("Carat") +
-  ylab("Price") 
+  ylab("Price") +
+  scale_x_continuous(breaks = extended_range_breaks()(diamonds$carat)) +
+  scale_y_continuous(breaks = extended_range_breaks()(diamonds$price)) + 
+  theme_tufte() 
 ```
+
+So what's different in this plot?
+
+* We've reduced the overplotting of the points by lowering their alpha level. It's now more easy to see the density of the points.
+* We've changed the axis into range bars. It's now easy to read the range values for the data set
+* We've stripped out the nonessential ink, such as the background and gridlines.
+
+
+To do this, we used a few tools included in the `ggtheme` package.
+
+* `geom_range()` to change the axis into range bars
+* `theme_tufte()` to remove the background and gridlines
+* `extended_range_breaks()` to create axis breaks that include the extreme values of the data.
+
+
+## Conclusion
+
+`ggplot2` makes it very easy to produce good looking visualisations. But sometimes less is more. In the Visual Display of Quantative Information, Tufte demonstrates that with a bit of thought, plots can be made even more effective at conveying information. Rather than mixing data with a chart style and "mixing well", we should envision the end product of what we wish to convey.
+
+
+
+
