@@ -1,0 +1,43 @@
+---
+title: What is Spark?
+author: Connor Kirkpatrick
+date: '2017-08-19'
+categories:
+  - Data Science
+tags: ~
+slug: what-is-apache-spark
+draft: TRUE
+---
+
+# What is Spark?
+
+Yesterday I completed the Data Camp Introduction to Sparklyr course. This covered an introduction to Spark, as well as sparklyr, a package to interface with spark through R. Before I forget it all, I wanted to write down an explanation of it, some key points and functions.
+
+
+Spark is an open source cluster-computer framework, maintained by the Apache Software Foundation.
+If like me, that doesn't help much, then this is a more simplified explanation/motivation for it.
+
+Suppose you want to analyse a dataset of your personal taxi (or uber) journeys. Unless you work as a taxi driver (or for uber), you probably won't have many. You've got a bit of expierence with R, so you load it into R Studio and carry on. Simple!
+
+But now, let's say you need to analyse the Uber Journeys for everyone in London. This is a lot more data. R is limited by the size of RAM on your computer. If the size of the data you wish to process is bigger than the size of your RAM, then your out of luck. If it's even approaching the limit, it will probably be quite slow.
+
+What do you do? Well there are many options. An obvious one is to get a faster computer, with more RAM. Spark is an alternative solution. Instead of one powerful computer, it provides a framework to let you create and utilise a "cluster" of many computers to do your data analysis bidding. This is a simplification of all the benefits provided, but it helps to provide a simple motivation.
+
+Unfortunately for R users out there, Spark is written in Scala. Until recently to work with it, you've needed to use Scala, Java or Python. `sparklyr` is the R interface to Spark. With it, you can work with Spark with familiar `dplyr` methods. 
+
+
+# Explanation of Compute
+# Explanation of Collect
+# Explanation of CopyTo
+
+# Examples
+
+
+```{r}
+
+library(sparklyr)
+
+# spark_install()
+
+sc <- spark_connect("local") # connect to my local spark cluster (of one computer)
+
