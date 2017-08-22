@@ -16,5 +16,180 @@ slug: what-is-apache-spark
 <p>Spark is an open source cluster-computer framework, maintained by the Apache Software Foundation. If like me, that doesn’t help much, then this is a more simplified explanation/motivation for it.</p>
 <p>Suppose you want to analyse a dataset of your personal taxi (or uber) journeys. Unless you work as a taxi driver (or for uber), you probably won’t have many. You’ve got a bit of expierence with R, so you load it into R Studio and carry on. Simple!</p>
 <p>But now, let’s say you need to analyse the Uber Journeys for everyone in London. This is a lot more data. R is limited by the size of RAM on your computer. If the size of the data you wish to process is bigger than the size of your RAM, then your out of luck. If it’s even approaching the limit, it will probably be quite slow.</p>
-<p>What do you do? Well there are many options. An obvious one is to get a faster computer, with more RAM. Spark is an alternative solution. Instead of one powerful computer, it provides a framework to let you create and utilise a “cluster” of many computers to do your data analysis bidding.</p>
+<p>What do you do? Well there are many options. An obvious one is to get a faster computer, with more RAM. Spark is an alternative solution. Instead of one powerful computer, it provides a framework to let you create and utilise a “cluster” of many computers to do your data analysis bidding. This is a simplification of all the benefits provided, but it helps to provide a simple motivation.</p>
+<p>Unfortunately for R users out there, Spark is written in Scala. Until recently to work with it, you’ve needed to use Scala, Java or Python. <code>sparklyr</code> is the R interface to Spark. With it, you can work with Spark with familiar <code>dplyr</code> methods.</p>
+<p>There are a few differences to understand when using splarklyr to manipulate data in the spark cluster rather than dplyr on your local machine</p>
+</div>
+<div id="examples" class="section level1">
+<h1>Examples</h1>
+<pre class="r"><code>library(sparklyr)</code></pre>
+<pre><code>## Warning: package &#39;sparklyr&#39; was built under R version 3.3.3</code></pre>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.3.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(ggplot2)</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.3.2</code></pre>
+<pre class="r"><code># spark_install()
+
+sc &lt;- spark_connect(&quot;local&quot;) # connect to my local spark cluster (of one computer)</code></pre>
+<pre><code>## * Using Spark: 2.1.0</code></pre>
+</div>
+<div id="explanation-of-copyto" class="section level1">
+<h1>Explanation of CopyTo</h1>
+<p>In Spark, the data is stored on the cluster. If the data you wish to analyse is on your local machine, then you will need to copy it to your Spark cluster. You can do this with <code>dplyr::copy_to()</code> (or <code>sparklyr::sdf_copy_to()</code>). This creates an object on your spark cluster. The variable you assign this will not be a dataframe, but a reference to the Spark Dataframe on the cluster.</p>
+<pre class="r"><code>diamonds_sc &lt;- dplyr::copy_to(sc,diamonds, overwrite = T)
+
+
+class(diamonds_sc)</code></pre>
+<pre><code>## [1] &quot;tbl_spark&quot; &quot;tbl_sql&quot;   &quot;tbl_lazy&quot;  &quot;tbl&quot;</code></pre>
+<pre class="r"><code>str(diamonds_sc)</code></pre>
+<pre><code>## List of 2
+##  $ src:List of 1
+##   ..$ con:List of 10
+##   .. ..$ master       : chr &quot;local[4]&quot;
+##   .. ..$ method       : chr &quot;shell&quot;
+##   .. ..$ app_name     : chr &quot;sparklyr&quot;
+##   .. ..$ config       :List of 5
+##   .. .. ..$ sparklyr.cores.local              : int 4
+##   .. .. ..$ spark.sql.shuffle.partitions.local: int 4
+##   .. .. ..$ spark.env.SPARK_LOCAL_IP.local    : chr &quot;127.0.0.1&quot;
+##   .. .. ..$ sparklyr.csv.embedded             : chr &quot;^1.*&quot;
+##   .. .. ..$ sparklyr.shell.driver-class-path  : chr &quot;&quot;
+##   .. .. ..- attr(*, &quot;config&quot;)= chr &quot;default&quot;
+##   .. .. ..- attr(*, &quot;file&quot;)= chr &quot;C:\\Users\\IBM_ADMIN\\Documents\\R\\win-library\\3.3\\sparklyr\\conf\\config-template.yml&quot;
+##   .. ..$ spark_home   : chr &quot;C:\\Users\\IBM_ADMIN\\AppData\\Local\\spark\\spark-2.1.0-bin-hadoop2.7&quot;
+##   .. ..$ backend      :Classes &#39;sockconn&#39;, &#39;connection&#39;  atomic [1:1] 6
+##   .. .. .. ..- attr(*, &quot;conn_id&quot;)=&lt;externalptr&gt; 
+##   .. ..$ monitor      :Classes &#39;sockconn&#39;, &#39;connection&#39;  atomic [1:1] 5
+##   .. .. .. ..- attr(*, &quot;conn_id&quot;)=&lt;externalptr&gt; 
+##   .. ..$ output_file  : chr &quot;C:\\Users\\IBM_AD~1\\AppData\\Local\\Temp\\RtmpczhNYd\\file29b441615ad_spark.log&quot;
+##   .. ..$ spark_context:Classes &#39;spark_jobj&#39;, &#39;shell_jobj&#39; &lt;environment: 0x000000000bab2aa0&gt; 
+##   .. ..$ java_context :Classes &#39;spark_jobj&#39;, &#39;shell_jobj&#39; &lt;environment: 0x000000000b9e75c0&gt; 
+##   .. ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;spark_connection&quot; &quot;spark_shell_connection&quot; &quot;DBIConnection&quot;
+##   ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;src_spark&quot; &quot;src_sql&quot; &quot;src&quot;
+##  $ ops:List of 2
+##   ..$ x   :Classes &#39;ident&#39;, &#39;character&#39;  chr &quot;diamonds&quot;
+##   ..$ vars: chr [1:10] &quot;carat&quot; &quot;cut&quot; &quot;color&quot; &quot;clarity&quot; ...
+##   ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;op_base_remote&quot; &quot;op_base&quot; &quot;op&quot;
+##  - attr(*, &quot;class&quot;)= chr [1:4] &quot;tbl_spark&quot; &quot;tbl_sql&quot; &quot;tbl_lazy&quot; &quot;tbl&quot;</code></pre>
+<pre class="r"><code>glimpse(diamonds_sc)</code></pre>
+<pre><code>## Observations: 25
+## Variables: 10
+## $ carat   &lt;dbl&gt; 0.23, 0.21, 0.23, 0.29, 0.31, 0.24, 0.24, 0.26, 0.22, ...
+## $ cut     &lt;chr&gt; &quot;Ideal&quot;, &quot;Premium&quot;, &quot;Good&quot;, &quot;Premium&quot;, &quot;Good&quot;, &quot;Very G...
+## $ color   &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;E&quot;, &quot;I&quot;, &quot;J&quot;, &quot;J&quot;, &quot;I&quot;, &quot;H&quot;, &quot;E&quot;, &quot;H&quot;, &quot;J&quot;,...
+## $ clarity &lt;chr&gt; &quot;SI2&quot;, &quot;SI1&quot;, &quot;VS1&quot;, &quot;VS2&quot;, &quot;SI2&quot;, &quot;VVS2&quot;, &quot;VVS1&quot;, &quot;SI...
+## $ depth   &lt;dbl&gt; 61.5, 59.8, 56.9, 62.4, 63.3, 62.8, 62.3, 61.9, 65.1, ...
+## $ table   &lt;dbl&gt; 55, 61, 65, 58, 58, 57, 57, 55, 61, 61, 55, 56, 61, 54...
+## $ price   &lt;int&gt; 326, 326, 327, 334, 335, 336, 336, 337, 337, 338, 339,...
+## $ x       &lt;dbl&gt; 3.95, 3.89, 4.05, 4.20, 4.34, 3.94, 3.95, 4.07, 3.87, ...
+## $ y       &lt;dbl&gt; 3.98, 3.84, 4.07, 4.23, 4.35, 3.96, 3.98, 4.11, 3.78, ...
+## $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, ...</code></pre>
+</div>
+<div id="explanation-of-collect" class="section level1">
+<h1>Explanation of Collect</h1>
+<p>Spark uses lazy evaluation. Commands sent to it will not be evaluated until needed. All of this is done on the cluster. What you recieve back from the cluster can be thought of as just a snapshot of the data’s results, not the data itself. Say you wished to use the data to create a plot, you would need to bring it back to your local R session. This is done with the <code>dplyr::collect()</code> function</p>
+<pre class="r"><code># Notice what is returned. 
+diamonds_sc %&gt;%
+  group_by(color) %&gt;%
+  summarise(mean_price = mean(price)) %&gt;%
+  arrange(desc(mean_price)) %&gt;%
+  str()</code></pre>
+<pre><code>## List of 2
+##  $ src:List of 1
+##   ..$ con:List of 10
+##   .. ..$ master       : chr &quot;local[4]&quot;
+##   .. ..$ method       : chr &quot;shell&quot;
+##   .. ..$ app_name     : chr &quot;sparklyr&quot;
+##   .. ..$ config       :List of 5
+##   .. .. ..$ sparklyr.cores.local              : int 4
+##   .. .. ..$ spark.sql.shuffle.partitions.local: int 4
+##   .. .. ..$ spark.env.SPARK_LOCAL_IP.local    : chr &quot;127.0.0.1&quot;
+##   .. .. ..$ sparklyr.csv.embedded             : chr &quot;^1.*&quot;
+##   .. .. ..$ sparklyr.shell.driver-class-path  : chr &quot;&quot;
+##   .. .. ..- attr(*, &quot;config&quot;)= chr &quot;default&quot;
+##   .. .. ..- attr(*, &quot;file&quot;)= chr &quot;C:\\Users\\IBM_ADMIN\\Documents\\R\\win-library\\3.3\\sparklyr\\conf\\config-template.yml&quot;
+##   .. ..$ spark_home   : chr &quot;C:\\Users\\IBM_ADMIN\\AppData\\Local\\spark\\spark-2.1.0-bin-hadoop2.7&quot;
+##   .. ..$ backend      :Classes &#39;sockconn&#39;, &#39;connection&#39;  atomic [1:1] 6
+##   .. .. .. ..- attr(*, &quot;conn_id&quot;)=&lt;externalptr&gt; 
+##   .. ..$ monitor      :Classes &#39;sockconn&#39;, &#39;connection&#39;  atomic [1:1] 5
+##   .. .. .. ..- attr(*, &quot;conn_id&quot;)=&lt;externalptr&gt; 
+##   .. ..$ output_file  : chr &quot;C:\\Users\\IBM_AD~1\\AppData\\Local\\Temp\\RtmpczhNYd\\file29b441615ad_spark.log&quot;
+##   .. ..$ spark_context:Classes &#39;spark_jobj&#39;, &#39;shell_jobj&#39; &lt;environment: 0x000000000bab2aa0&gt; 
+##   .. ..$ java_context :Classes &#39;spark_jobj&#39;, &#39;shell_jobj&#39; &lt;environment: 0x000000000b9e75c0&gt; 
+##   .. ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;spark_connection&quot; &quot;spark_shell_connection&quot; &quot;DBIConnection&quot;
+##   ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;src_spark&quot; &quot;src_sql&quot; &quot;src&quot;
+##  $ ops:List of 4
+##   ..$ name: chr &quot;arrange&quot;
+##   ..$ x   :List of 4
+##   .. ..$ name: chr &quot;summarise&quot;
+##   .. ..$ x   :List of 4
+##   .. .. ..$ name: chr &quot;group_by&quot;
+##   .. .. ..$ x   :List of 2
+##   .. .. .. ..$ x   :Classes &#39;ident&#39;, &#39;character&#39;  chr &quot;diamonds&quot;
+##   .. .. .. ..$ vars: chr [1:10] &quot;carat&quot; &quot;cut&quot; &quot;color&quot; &quot;clarity&quot; ...
+##   .. .. .. ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;op_base_remote&quot; &quot;op_base&quot; &quot;op&quot;
+##   .. .. ..$ dots:List of 1
+##   .. .. .. ..$ color: symbol color
+##   .. .. ..$ args:List of 1
+##   .. .. .. ..$ add: logi FALSE
+##   .. .. ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;op_group_by&quot; &quot;op_single&quot; &quot;op&quot;
+##   .. ..$ dots:List of 1
+##   .. .. ..$ mean_price:&lt;quosure: local 00000000159938D8&gt;
+## ~mean(price)
+##   .. .. ..- attr(*, &quot;class&quot;)= chr &quot;quosures&quot;
+##   .. ..$ args: list()
+##   .. ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;op_summarise&quot; &quot;op_single&quot; &quot;op&quot;
+##   ..$ dots:List of 1
+##   .. ..$ :&lt;quosure: local 00000000159FDA60&gt;
+## ~desc(mean_price)
+##   ..$ args: list()
+##   ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;op_arrange&quot; &quot;op_single&quot; &quot;op&quot;
+##  - attr(*, &quot;class&quot;)= chr [1:4] &quot;tbl_spark&quot; &quot;tbl_sql&quot; &quot;tbl_lazy&quot; &quot;tbl&quot;</code></pre>
+<pre class="r"><code># To get the actual data we need to use collect! Notice we need to assign it a variable (or pass it directly to ggplot). THe key is to use collect to get the actual data, not the reference to it. 
+
+computed_diamonds &lt;- diamonds_sc %&gt;%
+  group_by(color) %&gt;%
+  summarise(mean_price = mean(price)) %&gt;%
+  arrange(desc(mean_price)) %&gt;%
+  collect()
+
+ggplot(computed_diamonds, aes(color, mean_price)) + geom_bar(stat = &#39;identity&#39;)</code></pre>
+<p><img src="/post/2017-08-19-what-is-spark_files/figure-html/collect_example-1.png" width="672" /></p>
+</div>
+<div id="explanation-of-compute" class="section level1">
+<h1>Explanation of Compute</h1>
+<p>When we run a command in Spark, it is lazily evaluated (see above). The results returned are a reference to the spark cluster, not actual results. As such, if you wish to create an intermediatry table in Spark, you must use the <code>sparklyr::compute()</code> function. This stores thetable in Spark with the data you’ve piped in to it.</p>
+<pre class="r"><code>diamonds_sc %&gt;%
+  group_by(clarity) %&gt;%
+  summarise(mean_x = mean(x), mean_y = mean(y), mean_z = mean(z)) %&gt;%
+  compute(sc, name = &quot;diamond_size_summary&quot;)</code></pre>
+<pre><code>## # Source:   table&lt;diamond_size_summary&gt; [?? x 4]
+## # Database: spark_connection
+##   clarity   mean_x   mean_y   mean_z
+##     &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1    VVS2 5.218454 5.232118 3.221465
+## 2    VVS1 4.960364 4.975075 3.061294
+## 3     VS2 5.657709 5.658859 3.491478
+## 4      I1 6.761093 6.709379 4.207908
+## 5      IF 4.968402 4.989827 3.061659
+## 6     SI2 6.401370 6.397826 3.948478
+## 7     SI1 5.888383 5.888256 3.639845
+## 8     VS1 5.572178 5.581828 3.441007</code></pre>
+<pre class="r"><code>size_summary &lt;- tbl(sc, &quot;diamond_size_summary&quot;)
+
+glimpse(size_summary)</code></pre>
+<pre><code>## Observations: 8
+## Variables: 4
+## $ clarity &lt;chr&gt; &quot;VVS2&quot;, &quot;VVS1&quot;, &quot;VS2&quot;, &quot;I1&quot;, &quot;IF&quot;, &quot;SI2&quot;, &quot;SI1&quot;, &quot;VS1&quot;
+## $ mean_x  &lt;dbl&gt; 5.218454, 4.960364, 5.657709, 6.761093, 4.968402, 6.40...
+## $ mean_y  &lt;dbl&gt; 5.232118, 4.975075, 5.658859, 6.709379, 4.989827, 6.39...
+## $ mean_z  &lt;dbl&gt; 3.221465, 3.061294, 3.491478, 4.207908, 3.061659, 3.94...</code></pre>
 </div>
