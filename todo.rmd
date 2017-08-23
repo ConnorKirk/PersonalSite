@@ -21,4 +21,6 @@ output: html_document
 * Cooking
 * Making time for goals
 * Finding a hobby.
+* Two years at IBM
+* Convergence of Cloud Infrastructure to a commodity? Competitors will copy good products until they all look similar? In that case, could you abstract the cloud provider service away from the service (similaer to virtualisation and containers?)
 

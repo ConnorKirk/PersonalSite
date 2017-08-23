@@ -1,0 +1,49 @@
+---
+title: Good things are happening in Squash
+author: Connor Kirkpatrick
+date: '2017-08-23'
+slug: good-things-are-happening-in-squash
+categories:
+  - Squash
+tags: []
+draft: TRUE
+---
+
+# Good things are happening in Squash
+
+For my 22nd birthday I recieved a Racketball racket. I consider that my starting date for really playing the sports. I infact didn't start playing squash seriously for until October that year. At the time I've writing, I've been playing for just over 3 years.
+
+Whilst I wish that I had been around in it's "Hay-day", and I really regret not sticking to it as a junior, I am excited for the sport now. There are multiple shifts happening in the sport that I am hoping will revolutionise it.
+
+
+## Xamsa
+
+Xamsa is the initiatve of two squash fans in Canada. It originated in offering high quality, low cost rackets. 
+* Not in it for the money
+* Fund local squash
+* Don't change models every year >:(
+* Now offer range of kit eg bags following same ethos - High quality, low cost, no frills.
+* Rackets have "Up or Down" on the base..
+
+
+Great model that echoes the community of squash. It's approachable, good quality, enthusiastic. Echoes all best parts of the squash community.
+
+Enables others to get involved
+
+## Squash Levels
+
+Ever wondered where you stand in your club? Or how you would get on against the club pro?
+Made by Richard Bickers, Squash Levels automatically collects interclub league results and uses the data to calculate your skill level. The site is well made, and allows you to track your performance, predict your scores against opponents, and many more things.
+
+Now integrated with MyCourts, so there's the additional option for intra-club leagues to be recorded.
+
+
+Few sports where you could have such detailed statistics. Squash is a gladitorial sport, there's just you and your opponent. Your success is yours alone, and now can be tracked with Squash Levels. Again, it echoes the spirit of the community, with the majority of the functionality free to access. With more awareness, I think this could become a defining feature for the sport. Almost a gamification (as much as I hate that term).
+
+## Squash Skills
+
+Squash Skills contains hundreds of videos on every aspect of squash. From drop shot technique, to the mental aspects, to coaching others, it has a video series to explain the fundamentals. It regularly features leaders of the sport, as well as their coaches.
+
+* Branched out into regular squash camps.
+
+## Best of Three?
