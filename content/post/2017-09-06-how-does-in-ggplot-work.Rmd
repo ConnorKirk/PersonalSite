@@ -115,10 +115,5 @@ So in summary, ggplot2 clever identifies that `+` is a function, and then assign
 
 For a bit more information, check out the following
 
-1. The help page for the ggplot `+` method.
-
-```{r}
-help(`+.gg`)
-```
-
+1. [The help page for the ggplot `+` method](http://ggplot2.tidyverse.org/reference/gg-add.html). 
 1. For more about generic functions, check out [Advanced R, by Hadley Wickham](http://adv-r.had.co.nz/),  who also authored the `ggplot` package!

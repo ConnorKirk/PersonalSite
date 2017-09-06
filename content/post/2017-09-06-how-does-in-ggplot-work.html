@@ -55,10 +55,10 @@ ggplot(steak, aes(region, steak_prep, col = steak_prep)) + geom_jitter() + coord
 typeof(time) # double? But it&#39;s a date-time!?</code></pre>
 <pre><code>## [1] &quot;double&quot;</code></pre>
 <pre class="r"><code>print(time) # This prints the date though..</code></pre>
-<pre><code>## [1] &quot;2017-09-06 22:42:03 BST&quot;</code></pre>
+<pre><code>## [1] &quot;2017-09-06 22:50:23 BST&quot;</code></pre>
 <p>As you can see, the time, is not strictly a time. It’s actually a double, counting the number of seconds since the Unix epoch. But when we print it, it returns a pretty date? Very odd.</p>
 <pre class="r"><code>print(as.numeric(time)) # That&#39;s what it actually is</code></pre>
-<pre><code>## [1] 1504734124</code></pre>
+<pre><code>## [1] 1504734624</code></pre>
 <p>So how does it know to print something else? The answer- Generic functions. When you call print, a bit more goes on behind the scenes that you might initially realise. <code>print</code> is known as a generic method. Depending on the class of the object is it trying to print, a different print function will be called! You can see all of the methods for print using the <code>methods()</code> function.</p>
 <pre class="r"><code>typeof(print)</code></pre>
 <pre><code>## [1] &quot;closure&quot;</code></pre>
@@ -80,12 +80,7 @@ typeof(time) # double? But it&#39;s a date-time!?</code></pre>
 <p>So in summary, ggplot2 clever identifies that <code>+</code> is a function, and then assigns it a new method, which is then uses to create beautiful plots!</p>
 <p>For a bit more information, check out the following</p>
 <ol style="list-style-type: decimal">
-<li>The help page for the ggplot <code>+</code> method.</li>
-</ol>
-<pre class="r"><code>help(`+.gg`)</code></pre>
-<pre><code>## starting httpd help server ...</code></pre>
-<pre><code>##  done</code></pre>
-<ol style="list-style-type: decimal">
+<li><a href="http://ggplot2.tidyverse.org/reference/gg-add.html">The help page for the ggplot <code>+</code> method</a>.</li>
 <li>For more about generic functions, check out <a href="http://adv-r.had.co.nz/">Advanced R, by Hadley Wickham</a>, who also authored the <code>ggplot</code> package!</li>
 </ol>
 </div>
