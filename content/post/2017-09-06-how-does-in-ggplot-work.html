@@ -1,0 +1,92 @@
+---
+title: How does `+` in ggplot work?
+author: Connor Kirkpatrick
+date: '2017-09-06'
+slug: how-does-in-ggplot-work
+categories: []
+tags:
+  - ggplot
+---
+
+
+
+<p>I am a big fan of <code>ggplot2</code>. As one of the most popular R packages, I’m clearly not alone. As well as making great plots, it’s given me a deeper concept of what a plot is, and how data maps to a geom (in gg terms).</p>
+<p>One of the most recognisable parts of the package is the concept of adding layers to plots. We’ll use the <code>steak_survey</code> dataset from the <code>fivethirtyeight</code> package. (Check out their website for some interesting data related stories!)</p>
+<pre class="r"><code>library(ggplot2)</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.3.2</code></pre>
+<pre class="r"><code>library(fivethirtyeight)</code></pre>
+<pre><code>## Warning: package &#39;fivethirtyeight&#39; was built under R version 3.3.3</code></pre>
+<pre class="r"><code>steak &lt;- fivethirtyeight::steak_survey
+
+# Create example plot
+
+ggplot(steak, aes(region, steak_prep, col = steak_prep)) + geom_jitter() + coord_flip()</code></pre>
+<p><img src="/post/2017-09-06-how-does-in-ggplot-work_files/figure-html/firstplot-1.png" width="672" /></p>
+<p>The code to create this plot literally adds layers, using <code>+</code>. But how does the <code>+</code> work? It’s not a number.., so what magic is going on? Can we remove layers with <code>-</code>?</p>
+<p>To get our answer, there are two parts to understand.</p>
+<div id="part-one---what-exactly-is" class="section level2">
+<h2>Part One - What exactly is <code>+</code>?</h2>
+<p>It seems pretty obvious. Everyone will recognise the <code>+</code> symbol from an early age. But what is it exactly in R?</p>
+<pre class="r"><code>1 + 2</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code># 3</code></pre>
+<p><code>+</code> is in fact, just another function. The ability to perform <code>x + y</code> is syntactic sugar for the language. It’s much easier than typing it’s functional form as shown in the example below.</p>
+<pre class="r"><code>class(`+`)</code></pre>
+<pre><code>## [1] &quot;function&quot;</code></pre>
+<pre class="r"><code>1 + 2</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>`+`(1, 2)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<p>So when we call <code>ggplot() + geom_*</code>, we’re actually just calling another function like any other. We could recreate our above graph with the code below, as it’s equivalent (apart from the missing <code>coord_flip</code>).</p>
+<pre class="r"><code>`+`(ggplot(steak, aes(region, steak_prep, col = steak_prep)), geom_jitter())</code></pre>
+<p><img src="/post/2017-09-06-how-does-in-ggplot-work_files/figure-html/secondplot-1.png" width="672" /></p>
+<p>So that explains what <code>+</code> is, but we still don’t know how <code>R</code> knows what the sum of a <code>ggplot() + geom_*</code> call is.</p>
+</div>
+<div id="part-two---generic-functions" class="section level2">
+<h2>Part Two - Generic Functions</h2>
+<p>To get out answer, we’ll take a small detour along the way.</p>
+<p>Let’s look at <code>print()</code></p>
+<pre class="r"><code>print(&quot;abcdef&quot;) # works as expected</code></pre>
+<pre><code>## [1] &quot;abcdef&quot;</code></pre>
+<pre class="r"><code>print(123) # Still works as expected</code></pre>
+<pre><code>## [1] 123</code></pre>
+<p>Not very interesting so far, so let’s break it.</p>
+<pre class="r"><code>time &lt;- Sys.time() # return current time
+typeof(time) # double? But it&#39;s a date-time!?</code></pre>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<pre class="r"><code>print(time) # This prints the date though..</code></pre>
+<pre><code>## [1] &quot;2017-09-06 22:42:03 BST&quot;</code></pre>
+<p>As you can see, the time, is not strictly a time. It’s actually a double, counting the number of seconds since the Unix epoch. But when we print it, it returns a pretty date? Very odd.</p>
+<pre class="r"><code>print(as.numeric(time)) # That&#39;s what it actually is</code></pre>
+<pre><code>## [1] 1504734124</code></pre>
+<p>So how does it know to print something else? The answer- Generic functions. When you call print, a bit more goes on behind the scenes that you might initially realise. <code>print</code> is known as a generic method. Depending on the class of the object is it trying to print, a different print function will be called! You can see all of the methods for print using the <code>methods()</code> function.</p>
+<pre class="r"><code>typeof(print)</code></pre>
+<pre><code>## [1] &quot;closure&quot;</code></pre>
+<pre class="r"><code>class(print)</code></pre>
+<pre><code>## [1] &quot;function&quot;</code></pre>
+<pre class="r"><code>head(methods(print))</code></pre>
+<pre><code>## [1] &quot;print.acf&quot;     &quot;print.AES&quot;     &quot;print.anova&quot;   &quot;print.aov&quot;    
+## [5] &quot;print.aovlist&quot; &quot;print.ar&quot;</code></pre>
+<pre class="r"><code>length(methods(print))</code></pre>
+<pre><code>## [1] 227</code></pre>
+<p>When you print the time, it checks to see the class of the object. Our time object has the classes of <code>POSIXct</code> and <code>POSIXt</code>. It then calls the <code>print.POSIXct()</code> method, to nicely format out time.</p>
+<div id="but-what-does-this-have-to-do-with" class="section level3">
+<h3>But what does this have to do with <code>+</code>?</h3>
+<p>You may have already made the leap, but as we discussed earlier, <code>+</code> is just another function. As such, we could assign it another method. In this case, it’s as below.</p>
+<pre class="r"><code>methods(`+`)</code></pre>
+<pre><code>## [1] +.Date   +.gg*    +.POSIXt
+## see &#39;?methods&#39; for accessing help and source code</code></pre>
+<pre class="r"><code># Note +.gg* - This is the method we are after!</code></pre>
+<p>So in summary, ggplot2 clever identifies that <code>+</code> is a function, and then assigns it a new method, which is then uses to create beautiful plots!</p>
+<p>For a bit more information, check out the following</p>
+<ol style="list-style-type: decimal">
+<li>The help page for the ggplot <code>+</code> method.</li>
+</ol>
+<pre class="r"><code>help(`+.gg`)</code></pre>
+<pre><code>## starting httpd help server ...</code></pre>
+<pre><code>##  done</code></pre>
+<ol style="list-style-type: decimal">
+<li>For more about generic functions, check out <a href="http://adv-r.had.co.nz/">Advanced R, by Hadley Wickham</a>, who also authored the <code>ggplot</code> package!</li>
+</ol>
+</div>
+</div>
