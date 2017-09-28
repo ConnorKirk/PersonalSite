@@ -3,8 +3,8 @@ relativeurls = true
 languageCode = "en-us"
 title = "Connor Kirkpatrick"
 theme = "hugo-lithium-theme"
-googleAnalytics = ""
-disqusShortname = ""
+googleAnalytics = "UA-107230293-1"
+disqusShortname = "connorkirkpatrick"
 ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 
 [permalinks]
@@ -21,7 +21,7 @@ ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
     url = "https://twitter.com/ConnorKP"
 
 [params]
-    description = "A website built through Hugo and blogdown."
+    description = "Connor Kirkpatricks personal site for Squash, R, data and thoughts"
 
     # options for highlight.js (version, additional languages, and theme)
     highlightjsVersion = "9.11.0"
