@@ -1,0 +1,75 @@
+---
+title: What's the most popular car in the UK?
+author: Connor Kirkpatrick
+date: '2017-10-10'
+slug: what-s-the-most-popular-car-in-the-uk
+categories:
+  - Data Science
+tags: []
+---
+
+
+
+<p>The Office of National Statistics is a brilliant source of interesting data sets. <a href="https://www.gov.uk/government/statistics">This page</a> lists recently released datasets. Check regularly and you’ll soon notice these data sets feed into news articles by the Economist, BBC news and more.</p>
+<p>One I recently thought to explore detailed the count of car makes and models in the UK. What’s the most popular car make and model in the UK? It’s easier to list a few likely candidates.</p>
+<pre class="r"><code>library(tidyverse)
+library(readxl)
+
+path &lt;- &quot;~/Learning/R/Datasets/vehicle-statistics-make-model.xlsx&quot;
+cars &lt;- read_excel(path = path, skip = 8, col_names = FALSE, sheet =  1)
+
+names &lt;- read_excel(path = path, skip = 6, col_names = F, n_max = 1)
+names[2] &lt;- &quot;Model&quot;
+
+names(cars) &lt;- names
+
+tidy_cars &lt;- cars %&gt;%
+  gather(key = Period, value = Count, -Make, -Model) %&gt;%
+  extract(Period, c(&quot;Year&quot;, &quot;Quarter&quot;, &quot;Region&quot;), &quot;(\\d{4}) Q(1|2|3|4) (UK|GB)&quot;) %&gt;%
+  mutate(Year = as.integer(Year),
+         Quarter = as.integer(Quarter),
+         Make = stringr::str_trim(Make),
+         Model = stringr::str_trim(Model),
+         YQ = lubridate::yq(paste(Year,&quot;/&quot;,Quarter))) %&gt;%
+  filter(stringr::str_length(Make) &lt; 20,
+         !is.na(Count))</code></pre>
+<p>Now that we have our tidy dataset, we can explore the latest counts in the UK, from Q2 2017.</p>
+<pre class="r"><code>tidy_cars_uk_2017_q2 &lt;- tidy_cars %&gt;%
+  filter(Year == 2017, Quarter == 2, Region == &quot;UK&quot;)
+  
+  
+tidy_cars_uk_2017_q2 %&gt;% count(Make, wt = Count) %&gt;%
+arrange(desc(n)) %&gt;%
+top_n(n = 30) %&gt;%
+ggplot(aes(reorder(Make, n), n)) + 
+  geom_bar(stat = &quot;identity&quot;) + 
+  labs(x = &quot;Make&quot;, y = &quot;Count&quot;, 
+       title = &quot;The 30 most popular car makes in the UK as of Q2 2017&quot;, 
+       subtitle = &quot;Ford, Vauxhal and Volkswagen are significantly more popular than other makes&quot;) +
+  coord_flip()</code></pre>
+<pre><code>## Selecting by n</code></pre>
+<p><img src="/post/2017-10-10-what-s-the-most-popular-car-in-the-uk_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code># helper function
+simplify_model &lt;- function(model) {
+  split_list &lt;- stringr::str_split(model, &quot; &quot;) %&gt;% `[[`(1)
+  
+  split_list[[1]]
+}</code></pre>
+<div id="most-popular-car-models-by-manufacturer" class="section level1">
+<h1>Most popular car models (by Manufacturer)</h1>
+<pre class="r"><code>tidy_cars_uk_2017_q2 %&gt;%
+  mutate(simple_model = map_chr(Model, ~ simplify_model(.x))) %&gt;%
+  group_by(Make, simple_model) %&gt;%
+  summarise(Count = sum(Count)) %&gt;% 
+  ungroup() %&gt;%
+  top_n(25) %&gt;%
+  ggplot(aes(x = (reorder(simple_model, Count)), y = Count, fill = Make)) + 
+    geom_bar(stat = &quot;identity&quot;) + 
+    labs(x = &quot;Model&quot;,
+         y = &quot;Count&quot;, 
+         title = &quot;The most popular car makes as of Q2 2017&quot;, 
+         subtitle = &quot;Ford, Vauxhall and Volkswagen are the most popular makes&quot;) +
+    coord_flip() </code></pre>
+<pre><code>## Selecting by Count</code></pre>
+<p><img src="/post/2017-10-10-what-s-the-most-popular-car-in-the-uk_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>

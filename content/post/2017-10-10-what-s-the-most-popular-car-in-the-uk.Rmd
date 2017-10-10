@@ -1,0 +1,91 @@
+---
+title: What's the most popular car in the UK?
+author: Connor Kirkpatrick
+date: '2017-10-10'
+slug: what-s-the-most-popular-car-in-the-uk
+categories:
+  - Data Science
+tags: []
+---
+
+The Office of National Statistics is a brilliant source of interesting data sets. [This page](https://www.gov.uk/government/statistics) lists recently released datasets. Check regularly and you'll soon notice these data sets feed into news articles by the Economist, BBC news and more.
+
+One I recently thought to explore detailed the count of car makes and models in the UK. What's the most popular car make and model in the UK? It's easier to list a few likely candidates.
+
+
+```{r warning = FALSE, message=FALSE}
+library(tidyverse)
+library(readxl)
+
+path <- "~/Learning/R/Datasets/vehicle-statistics-make-model.xlsx"
+cars <- read_excel(path = path, skip = 8, col_names = FALSE, sheet =  1)
+
+names <- read_excel(path = path, skip = 6, col_names = F, n_max = 1)
+names[2] <- "Model"
+
+names(cars) <- names
+
+tidy_cars <- cars %>%
+  gather(key = Period, value = Count, -Make, -Model) %>%
+  extract(Period, c("Year", "Quarter", "Region"), "(\\d{4}) Q(1|2|3|4) (UK|GB)") %>%
+  mutate(Year = as.integer(Year),
+         Quarter = as.integer(Quarter),
+         Make = stringr::str_trim(Make),
+         Model = stringr::str_trim(Model),
+         YQ = lubridate::yq(paste(Year,"/",Quarter))) %>%
+  filter(stringr::str_length(Make) < 20,
+         !is.na(Count))
+
+```
+
+
+Now that we have our tidy dataset, we can explore the latest counts in the UK, from Q2 2017.
+
+```{r}
+tidy_cars_uk_2017_q2 <- tidy_cars %>%
+  filter(Year == 2017, Quarter == 2, Region == "UK")
+  
+  
+tidy_cars_uk_2017_q2 %>% count(Make, wt = Count) %>%
+arrange(desc(n)) %>%
+top_n(n = 30) %>%
+ggplot(aes(reorder(Make, n), n)) + 
+  geom_bar(stat = "identity") + 
+  labs(x = "Make", y = "Count", 
+       title = "The 30 most popular car makes in the UK as of Q2 2017", 
+       subtitle = "Ford, Vauxhal and Volkswagen are significantly more popular than other makes") +
+  coord_flip()
+    
+```
+
+
+```{r}
+
+# helper function
+simplify_model <- function(model) {
+  split_list <- stringr::str_split(model, " ") %>% `[[`(1)
+  
+  split_list[[1]]
+}
+```
+
+
+# Most popular car models (by Manufacturer)
+
+
+```{r}
+
+tidy_cars_uk_2017_q2 %>%
+  mutate(simple_model = map_chr(Model, ~ simplify_model(.x))) %>%
+  group_by(Make, simple_model) %>%
+  summarise(Count = sum(Count)) %>% 
+  ungroup() %>%
+  top_n(25) %>%
+  ggplot(aes(x = (reorder(simple_model, Count)), y = Count, fill = Make)) + 
+    geom_bar(stat = "identity") + 
+    labs(x = "Model",
+         y = "Count", 
+         title = "The most popular car makes as of Q2 2017", 
+         subtitle = "Ford, Vauxhall and Volkswagen are the most popular makes") +
+    coord_flip() 
+```
