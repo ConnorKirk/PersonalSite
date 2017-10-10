@@ -59,6 +59,23 @@ ggplot(aes(reorder(Make, n), n)) +
 ```
 
 
+
+
+# Most popular car models (by Manufacturer)
+
+Before we can find which car models are most popular, we need to do a bit of data transformation first. To illustrate the problem, look out the output below.
+
+```{r}
+tidy_cars %>% 
+  select(Make, Model) %>%
+  filter(Make == "FORD", grepl("B-MAX", Model)) %>%
+  distinct()
+```
+
+When we consider Car models, should we group similar models together, or consider them seperate? If we don't group them, a popular car model with many different sub-models may appear less popular that it is overall.
+
+For our purposes, we will group them together the best we can. This should gives us a more representative picture of car model popularity. The downside is that our grouping is arbitary. THe strategy I've taken is to split the strings on the first space, and take the first chunk. This works for the majority of cases, but still misses some.
+
 ```{r}
 
 # helper function
@@ -68,10 +85,6 @@ simplify_model <- function(model) {
   split_list[[1]]
 }
 ```
-
-
-# Most popular car models (by Manufacturer)
-
 
 ```{r}
 

@@ -49,14 +49,35 @@ ggplot(aes(reorder(Make, n), n)) +
   coord_flip()</code></pre>
 <pre><code>## Selecting by n</code></pre>
 <p><img src="/post/2017-10-10-what-s-the-most-popular-car-in-the-uk_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<div id="most-popular-car-models-by-manufacturer" class="section level1">
+<h1>Most popular car models (by Manufacturer)</h1>
+<p>Before we can find which car models are most popular, we need to do a bit of data transformation first. To illustrate the problem, look out the output below.</p>
+<pre class="r"><code>tidy_cars %&gt;% 
+  select(Make, Model) %&gt;%
+  filter(Make == &quot;FORD&quot;, grepl(&quot;B-MAX&quot;, Model)) %&gt;%
+  distinct()</code></pre>
+<pre><code>## # A tibble: 26 x 2
+##     Make                         Model
+##    &lt;chr&gt;                         &lt;chr&gt;
+##  1  FORD                  B-MAX STUDIO
+##  2  FORD           B-MAX TITANIUM AUTO
+##  3  FORD      B-MAX TITANIUM NAVIGATOR
+##  4  FORD B-MAX TITANIUM NAVIGATOR AUTO
+##  5  FORD B-MAX TITANIUM NAVIGATOR TDCI
+##  6  FORD           B-MAX TITANIUM TDCI
+##  7  FORD          B-MAX TITANIUM TURBO
+##  8  FORD              B-MAX TITANIUM X
+##  9  FORD         B-MAX TITANIUM X AUTO
+## 10  FORD     B-MAX TITANIUM X NAV TDCI
+## # ... with 16 more rows</code></pre>
+<p>When we consider Car models, should we group similar models together, or consider them seperate? If we don’t group them, a popular car model with many different sub-models may appear less popular that it is overall.</p>
+<p>For our purposes, we will group them together the best we can. This should gives us a more representative picture of car model popularity. The downside is that our grouping is arbitary. THe strategy I’ve taken is to split the strings on the first space, and take the first chunk. This works for the majority of cases, but still misses some.</p>
 <pre class="r"><code># helper function
 simplify_model &lt;- function(model) {
   split_list &lt;- stringr::str_split(model, &quot; &quot;) %&gt;% `[[`(1)
   
   split_list[[1]]
 }</code></pre>
-<div id="most-popular-car-models-by-manufacturer" class="section level1">
-<h1>Most popular car models (by Manufacturer)</h1>
 <pre class="r"><code>tidy_cars_uk_2017_q2 %&gt;%
   mutate(simple_model = map_chr(Model, ~ simplify_model(.x))) %&gt;%
   group_by(Make, simple_model) %&gt;%
@@ -71,5 +92,5 @@ simplify_model &lt;- function(model) {
          subtitle = &quot;Ford, Vauxhall and Volkswagen are the most popular makes&quot;) +
     coord_flip() </code></pre>
 <pre><code>## Selecting by Count</code></pre>
-<p><img src="/post/2017-10-10-what-s-the-most-popular-car-in-the-uk_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="/post/2017-10-10-what-s-the-most-popular-car-in-the-uk_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
