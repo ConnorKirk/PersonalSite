@@ -6,50 +6,70 @@ slug: what-s-the-most-popular-car-in-the-uk
 categories:
   - Data Science
 tags: []
+output: html_document
 ---
 
 The Office of National Statistics is a brilliant source of interesting data sets. [This page](https://www.gov.uk/government/statistics) lists recently released datasets. Check regularly and you'll soon notice these data sets feed into news articles by the Economist, BBC news and more.
 
-One I recently thought to explore detailed the count of car makes and models in the UK. What's the most popular car make and model in the UK? It's easier to list a few likely candidates.
+One I recently thought to explore detailed the count of car makes and models in the UK. I wonder what's the most popular car make and model in the UK?
 
 
 ```{r warning = FALSE, message=FALSE}
 library(tidyverse)
 library(readxl)
+library(stringr)
 
 path <- "~/Learning/R/Datasets/vehicle-statistics-make-model.xlsx"
-cars <- read_excel(path = path, skip = 8, col_names = FALSE, sheet =  1)
+car_data <- read_excel(path = path, skip = 8, col_names = FALSE, sheet =  1)
 
+```
+
+Great, we've got our data. But what does it look like?
+
+```{r echo=FALSE}
+knitr::kable(head(car_data))
+```
+oh.
+
+oh no.
+
+It's not as we'd like it, but we can certainly handle it.
+
+We'll need to tidy it up a little before the real fun begins.
+
+```{r warning=FALSE}
 names <- read_excel(path = path, skip = 6, col_names = F, n_max = 1)
 names[2] <- "Model"
 
-names(cars) <- names
+names(car_data) <- names
 
-tidy_cars <- cars %>%
+tidy_cars <- car_data %>%
   gather(key = Period, value = Count, -Make, -Model) %>%
   extract(Period, c("Year", "Quarter", "Region"), "(\\d{4}) Q(1|2|3|4) (UK|GB)") %>%
   mutate(Year = as.integer(Year),
          Quarter = as.integer(Quarter),
-         Make = stringr::str_trim(Make),
-         Model = stringr::str_trim(Model),
+         Make = str_trim(Make),
+         Model = str_trim(Model),
          YQ = lubridate::yq(paste(Year,"/",Quarter))) %>%
   filter(stringr::str_length(Make) < 20,
          !is.na(Count))
-
 ```
 
+```{r echo=FALSE}
+knitr::kable(head(tidy_cars))
+```
 
-Now that we have our tidy dataset, we can explore the latest counts in the UK, from Q2 2017.
+Much better!
+
+Now that we have our tidy dataset, lets explore the latest counts in the UK, from Q2 2017.
 
 ```{r}
-tidy_cars_uk_2017_q2 <- tidy_cars %>%
-  filter(Year == 2017, Quarter == 2, Region == "UK")
-  
-  
-tidy_cars_uk_2017_q2 %>% count(Make, wt = Count) %>%
-arrange(desc(n)) %>%
-top_n(n = 30) %>%
-ggplot(aes(reorder(Make, n), n)) + 
+tidy_cars %>% 
+  filter(Year == 2017, Quarter == 2, Region == "UK") %>%
+  count(Make, wt = Count) %>%
+  arrange(desc(n)) %>%
+  top_n(n, n = 30) %>%
+  ggplot(aes(reorder(Make, n), n)) + 
   geom_bar(stat = "identity") + 
   labs(x = "Make", y = "Count", 
        title = "The 30 most popular car makes in the UK as of Q2 2017", 
@@ -57,9 +77,6 @@ ggplot(aes(reorder(Make, n), n)) +
   coord_flip()
     
 ```
-
-
-
 
 # Most popular car models (by Manufacturer)
 
@@ -69,7 +86,8 @@ Before we can find which car models are most popular, we need to do a bit of dat
 tidy_cars %>% 
   select(Make, Model) %>%
   filter(Make == "FORD", grepl("B-MAX", Model)) %>%
-  distinct()
+  distinct() %>% 
+  knitr::kable()
 ```
 
 When we consider Car models, should we group similar models together, or consider them seperate? If we don't group them, a popular car model with many different sub-models may appear less popular that it is overall.
@@ -78,17 +96,19 @@ For our purposes, we will group them together the best we can. This should gives
 
 ```{r}
 
-# helper function
+# helper function to split Model on the first " " and extract the first chunk
 simplify_model <- function(model) {
   split_list <- stringr::str_split(model, " ") %>% `[[`(1)
   
   split_list[[1]]
 }
+
 ```
 
 ```{r}
 
-tidy_cars_uk_2017_q2 %>%
+tidy_cars %>% 
+  filter(Year == 2017, Quarter == 2, Region == "UK") %>%
   mutate(simple_model = map_chr(Model, ~ simplify_model(.x))) %>%
   group_by(Make, simple_model) %>%
   summarise(Count = sum(Count)) %>% 

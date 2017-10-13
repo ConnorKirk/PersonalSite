@@ -6,79 +6,779 @@ slug: what-s-the-most-popular-car-in-the-uk
 categories:
   - Data Science
 tags: []
+output: html_document
 ---
 
 
 
 <p>The Office of National Statistics is a brilliant source of interesting data sets. <a href="https://www.gov.uk/government/statistics">This page</a> lists recently released datasets. Check regularly and you’ll soon notice these data sets feed into news articles by the Economist, BBC news and more.</p>
-<p>One I recently thought to explore detailed the count of car makes and models in the UK. What’s the most popular car make and model in the UK? It’s easier to list a few likely candidates.</p>
+<p>One I recently thought to explore detailed the count of car makes and models in the UK. I wonder what’s the most popular car make and model in the UK?</p>
 <pre class="r"><code>library(tidyverse)
 library(readxl)
+library(stringr)
 
 path &lt;- &quot;~/Learning/R/Datasets/vehicle-statistics-make-model.xlsx&quot;
-cars &lt;- read_excel(path = path, skip = 8, col_names = FALSE, sheet =  1)
-
-names &lt;- read_excel(path = path, skip = 6, col_names = F, n_max = 1)
+car_data &lt;- read_excel(path = path, skip = 8, col_names = FALSE, sheet =  1)</code></pre>
+<p>Great, we’ve got our data. But what does it look like?</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">X__1</th>
+<th align="left">X__2</th>
+<th align="right">X__3</th>
+<th align="right">X__4</th>
+<th align="right">X__5</th>
+<th align="right">X__6</th>
+<th align="right">X__7</th>
+<th align="right">X__8</th>
+<th align="right">X__9</th>
+<th align="right">X__10</th>
+<th align="right">X__11</th>
+<th align="right">X__12</th>
+<th align="right">X__13</th>
+<th align="right">X__14</th>
+<th align="right">X__15</th>
+<th align="right">X__16</th>
+<th align="right">X__17</th>
+<th align="right">X__18</th>
+<th align="right">X__19</th>
+<th align="right">X__20</th>
+<th align="right">X__21</th>
+<th align="right">X__22</th>
+<th align="right">X__23</th>
+<th align="right">X__24</th>
+<th align="right">X__25</th>
+<th align="right">X__26</th>
+<th align="right">X__27</th>
+<th align="right">X__28</th>
+<th align="right">X__29</th>
+<th align="right">X__30</th>
+<th align="right">X__31</th>
+<th align="right">X__32</th>
+<th align="right">X__33</th>
+<th align="right">X__34</th>
+<th align="right">X__35</th>
+<th align="right">X__36</th>
+<th align="right">X__37</th>
+<th align="right">X__38</th>
+<th align="right">X__39</th>
+<th align="right">X__40</th>
+<th align="right">X__41</th>
+<th align="right">X__42</th>
+<th align="right">X__43</th>
+<th align="right">X__44</th>
+<th align="right">X__45</th>
+<th align="right">X__46</th>
+<th align="right">X__47</th>
+<th align="right">X__48</th>
+<th align="right">X__49</th>
+<th align="right">X__50</th>
+<th align="right">X__51</th>
+<th align="right">X__52</th>
+<th align="right">X__53</th>
+<th align="right">X__54</th>
+<th align="right">X__55</th>
+<th align="right">X__56</th>
+<th align="right">X__57</th>
+<th align="right">X__58</th>
+<th align="right">X__59</th>
+<th align="right">X__60</th>
+<th align="right">X__61</th>
+<th align="right">X__62</th>
+<th align="right">X__63</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ABARTH</td>
+<td align="left">124 SPIDER MULTIAIR AUTO</td>
+<td align="right">72</td>
+<td align="right">71</td>
+<td align="right">59</td>
+<td align="right">58</td>
+<td align="right">36</td>
+<td align="right">35</td>
+<td align="right">26</td>
+<td align="right">25</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">ABARTH</td>
+<td align="left">500</td>
+<td align="right">4456</td>
+<td align="right">4382</td>
+<td align="right">4447</td>
+<td align="right">4370</td>
+<td align="right">4490</td>
+<td align="right">4411</td>
+<td align="right">4525</td>
+<td align="right">4448</td>
+<td align="right">4568</td>
+<td align="right">4487</td>
+<td align="right">4550</td>
+<td align="right">4469</td>
+<td align="right">4580</td>
+<td align="right">4500</td>
+<td align="right">4574</td>
+<td align="right">4494</td>
+<td align="right">4548</td>
+<td align="right">4467</td>
+<td align="right">4462</td>
+<td align="right">4387</td>
+<td align="right">4421</td>
+<td align="right">4347</td>
+<td align="right">4263</td>
+<td align="right">4094</td>
+<td align="right">3977</td>
+<td align="right">3834</td>
+<td align="right">3782</td>
+<td align="right">3622</td>
+<td align="right">3535</td>
+<td align="right">3387</td>
+<td align="right">3296</td>
+<td align="right">3148</td>
+<td align="right">2982</td>
+<td align="right">2752</td>
+<td align="right">2630</td>
+<td align="right">2417</td>
+<td align="right">2293</td>
+<td align="right">2055</td>
+<td align="right">1909</td>
+<td align="right">1677</td>
+<td align="right">1358</td>
+<td align="right">1039</td>
+<td align="right">706</td>
+<td align="right">456</td>
+<td align="right">232</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">ABARTH</td>
+<td align="left">500 C</td>
+<td align="right">608</td>
+<td align="right">596</td>
+<td align="right">608</td>
+<td align="right">598</td>
+<td align="right">603</td>
+<td align="right">592</td>
+<td align="right">614</td>
+<td align="right">602</td>
+<td align="right">615</td>
+<td align="right">604</td>
+<td align="right">614</td>
+<td align="right">603</td>
+<td align="right">631</td>
+<td align="right">619</td>
+<td align="right">627</td>
+<td align="right">615</td>
+<td align="right">638</td>
+<td align="right">624</td>
+<td align="right">640</td>
+<td align="right">626</td>
+<td align="right">640</td>
+<td align="right">626</td>
+<td align="right">640</td>
+<td align="right">648</td>
+<td align="right">642</td>
+<td align="right">628</td>
+<td align="right">604</td>
+<td align="right">587</td>
+<td align="right">560</td>
+<td align="right">520</td>
+<td align="right">499</td>
+<td align="right">455</td>
+<td align="right">401</td>
+<td align="right">342</td>
+<td align="right">316</td>
+<td align="right">239</td>
+<td align="right">190</td>
+<td align="right">127</td>
+<td align="right">74</td>
+<td align="right">2</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">ABARTH</td>
+<td align="left">500 CUSTOM</td>
+<td align="right">367</td>
+<td align="right">362</td>
+<td align="right">363</td>
+<td align="right">358</td>
+<td align="right">374</td>
+<td align="right">370</td>
+<td align="right">382</td>
+<td align="right">378</td>
+<td align="right">378</td>
+<td align="right">373</td>
+<td align="right">380</td>
+<td align="right">376</td>
+<td align="right">380</td>
+<td align="right">376</td>
+<td align="right">373</td>
+<td align="right">369</td>
+<td align="right">329</td>
+<td align="right">326</td>
+<td align="right">196</td>
+<td align="right">196</td>
+<td align="right">16</td>
+<td align="right">16</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">ABARTH</td>
+<td align="left">500 CUSTOM S-A</td>
+<td align="right">112</td>
+<td align="right">110</td>
+<td align="right">112</td>
+<td align="right">110</td>
+<td align="right">114</td>
+<td align="right">112</td>
+<td align="right">113</td>
+<td align="right">111</td>
+<td align="right">111</td>
+<td align="right">109</td>
+<td align="right">89</td>
+<td align="right">87</td>
+<td align="right">57</td>
+<td align="right">55</td>
+<td align="right">26</td>
+<td align="right">26</td>
+<td align="right">18</td>
+<td align="right">18</td>
+<td align="right">15</td>
+<td align="right">15</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">ABARTH</td>
+<td align="left">500 S-A</td>
+<td align="right">90</td>
+<td align="right">88</td>
+<td align="right">87</td>
+<td align="right">85</td>
+<td align="right">92</td>
+<td align="right">90</td>
+<td align="right">92</td>
+<td align="right">90</td>
+<td align="right">94</td>
+<td align="right">92</td>
+<td align="right">96</td>
+<td align="right">94</td>
+<td align="right">95</td>
+<td align="right">93</td>
+<td align="right">95</td>
+<td align="right">93</td>
+<td align="right">90</td>
+<td align="right">88</td>
+<td align="right">82</td>
+<td align="right">80</td>
+<td align="right">78</td>
+<td align="right">76</td>
+<td align="right">71</td>
+<td align="right">62</td>
+<td align="right">55</td>
+<td align="right">48</td>
+<td align="right">43</td>
+<td align="right">35</td>
+<td align="right">24</td>
+<td align="right">15</td>
+<td align="right">8</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">oh.</td>
+<td align="left"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<p>oh no.</p>
+<p>It’s not as we’d like it, but we can certainly handle it.</p>
+<p>We’ll need to tidy it up a little before the real fun begins.</p>
+<pre class="r"><code>names &lt;- read_excel(path = path, skip = 6, col_names = F, n_max = 1)
 names[2] &lt;- &quot;Model&quot;
 
-names(cars) &lt;- names
+names(car_data) &lt;- names
 
-tidy_cars &lt;- cars %&gt;%
+tidy_cars &lt;- car_data %&gt;%
   gather(key = Period, value = Count, -Make, -Model) %&gt;%
   extract(Period, c(&quot;Year&quot;, &quot;Quarter&quot;, &quot;Region&quot;), &quot;(\\d{4}) Q(1|2|3|4) (UK|GB)&quot;) %&gt;%
   mutate(Year = as.integer(Year),
          Quarter = as.integer(Quarter),
-         Make = stringr::str_trim(Make),
-         Model = stringr::str_trim(Model),
+         Make = str_trim(Make),
+         Model = str_trim(Model),
          YQ = lubridate::yq(paste(Year,&quot;/&quot;,Quarter))) %&gt;%
   filter(stringr::str_length(Make) &lt; 20,
          !is.na(Count))</code></pre>
-<p>Now that we have our tidy dataset, we can explore the latest counts in the UK, from Q2 2017.</p>
-<pre class="r"><code>tidy_cars_uk_2017_q2 &lt;- tidy_cars %&gt;%
-  filter(Year == 2017, Quarter == 2, Region == &quot;UK&quot;)
-  
-  
-tidy_cars_uk_2017_q2 %&gt;% count(Make, wt = Count) %&gt;%
-arrange(desc(n)) %&gt;%
-top_n(n = 30) %&gt;%
-ggplot(aes(reorder(Make, n), n)) + 
+<table>
+<thead>
+<tr class="header">
+<th align="left">Make</th>
+<th align="left">Model</th>
+<th align="right">Year</th>
+<th align="right">Quarter</th>
+<th align="left">Region</th>
+<th align="right">Count</th>
+<th align="left">YQ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ABARTH</td>
+<td align="left">124 SPIDER MULTIAIR AUTO</td>
+<td align="right">2017</td>
+<td align="right">2</td>
+<td align="left">UK</td>
+<td align="right">72</td>
+<td align="left">2017-04-01</td>
+</tr>
+<tr class="even">
+<td align="left">ABARTH</td>
+<td align="left">500</td>
+<td align="right">2017</td>
+<td align="right">2</td>
+<td align="left">UK</td>
+<td align="right">4456</td>
+<td align="left">2017-04-01</td>
+</tr>
+<tr class="odd">
+<td align="left">ABARTH</td>
+<td align="left">500 C</td>
+<td align="right">2017</td>
+<td align="right">2</td>
+<td align="left">UK</td>
+<td align="right">608</td>
+<td align="left">2017-04-01</td>
+</tr>
+<tr class="even">
+<td align="left">ABARTH</td>
+<td align="left">500 CUSTOM</td>
+<td align="right">2017</td>
+<td align="right">2</td>
+<td align="left">UK</td>
+<td align="right">367</td>
+<td align="left">2017-04-01</td>
+</tr>
+<tr class="odd">
+<td align="left">ABARTH</td>
+<td align="left">500 CUSTOM S-A</td>
+<td align="right">2017</td>
+<td align="right">2</td>
+<td align="left">UK</td>
+<td align="right">112</td>
+<td align="left">2017-04-01</td>
+</tr>
+<tr class="even">
+<td align="left">ABARTH</td>
+<td align="left">500 S-A</td>
+<td align="right">2017</td>
+<td align="right">2</td>
+<td align="left">UK</td>
+<td align="right">90</td>
+<td align="left">2017-04-01</td>
+</tr>
+</tbody>
+</table>
+<p>Much better!</p>
+<p>Now that we have our tidy dataset, lets explore the latest counts in the UK, from Q2 2017.</p>
+<pre class="r"><code>tidy_cars %&gt;% 
+  filter(Year == 2017, Quarter == 2, Region == &quot;UK&quot;) %&gt;%
+  count(Make, wt = Count) %&gt;%
+  arrange(desc(n)) %&gt;%
+  top_n(n, n = 30) %&gt;%
+  ggplot(aes(reorder(Make, n), n)) + 
   geom_bar(stat = &quot;identity&quot;) + 
   labs(x = &quot;Make&quot;, y = &quot;Count&quot;, 
        title = &quot;The 30 most popular car makes in the UK as of Q2 2017&quot;, 
        subtitle = &quot;Ford, Vauxhal and Volkswagen are significantly more popular than other makes&quot;) +
   coord_flip()</code></pre>
-<pre><code>## Selecting by n</code></pre>
-<p><img src="/post/2017-10-10-what-s-the-most-popular-car-in-the-uk_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="/post/2017-10-10-what-s-the-most-popular-car-in-the-uk_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <div id="most-popular-car-models-by-manufacturer" class="section level1">
 <h1>Most popular car models (by Manufacturer)</h1>
 <p>Before we can find which car models are most popular, we need to do a bit of data transformation first. To illustrate the problem, look out the output below.</p>
 <pre class="r"><code>tidy_cars %&gt;% 
   select(Make, Model) %&gt;%
   filter(Make == &quot;FORD&quot;, grepl(&quot;B-MAX&quot;, Model)) %&gt;%
-  distinct()</code></pre>
-<pre><code>## # A tibble: 26 x 2
-##     Make                         Model
-##    &lt;chr&gt;                         &lt;chr&gt;
-##  1  FORD                  B-MAX STUDIO
-##  2  FORD           B-MAX TITANIUM AUTO
-##  3  FORD      B-MAX TITANIUM NAVIGATOR
-##  4  FORD B-MAX TITANIUM NAVIGATOR AUTO
-##  5  FORD B-MAX TITANIUM NAVIGATOR TDCI
-##  6  FORD           B-MAX TITANIUM TDCI
-##  7  FORD          B-MAX TITANIUM TURBO
-##  8  FORD              B-MAX TITANIUM X
-##  9  FORD         B-MAX TITANIUM X AUTO
-## 10  FORD     B-MAX TITANIUM X NAV TDCI
-## # ... with 16 more rows</code></pre>
+  distinct() %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Make</th>
+<th align="left">Model</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">FORD</td>
+<td align="left">B-MAX STUDIO</td>
+</tr>
+<tr class="even">
+<td align="left">FORD</td>
+<td align="left">B-MAX TITANIUM AUTO</td>
+</tr>
+<tr class="odd">
+<td align="left">FORD</td>
+<td align="left">B-MAX TITANIUM NAVIGATOR</td>
+</tr>
+<tr class="even">
+<td align="left">FORD</td>
+<td align="left">B-MAX TITANIUM NAVIGATOR AUTO</td>
+</tr>
+<tr class="odd">
+<td align="left">FORD</td>
+<td align="left">B-MAX TITANIUM NAVIGATOR TDCI</td>
+</tr>
+<tr class="even">
+<td align="left">FORD</td>
+<td align="left">B-MAX TITANIUM TDCI</td>
+</tr>
+<tr class="odd">
+<td align="left">FORD</td>
+<td align="left">B-MAX TITANIUM TURBO</td>
+</tr>
+<tr class="even">
+<td align="left">FORD</td>
+<td align="left">B-MAX TITANIUM X</td>
+</tr>
+<tr class="odd">
+<td align="left">FORD</td>
+<td align="left">B-MAX TITANIUM X AUTO</td>
+</tr>
+<tr class="even">
+<td align="left">FORD</td>
+<td align="left">B-MAX TITANIUM X NAV TDCI</td>
+</tr>
+<tr class="odd">
+<td align="left">FORD</td>
+<td align="left">B-MAX TITANIUM X NAVIGATOR</td>
+</tr>
+<tr class="even">
+<td align="left">FORD</td>
+<td align="left">B-MAX TITANIUM X NAVIGATOR A</td>
+</tr>
+<tr class="odd">
+<td align="left">FORD</td>
+<td align="left">B-MAX TITANIUM X TDCI</td>
+</tr>
+<tr class="even">
+<td align="left">FORD</td>
+<td align="left">B-MAX ZETEC</td>
+</tr>
+<tr class="odd">
+<td align="left">FORD</td>
+<td align="left">B-MAX ZETEC AUTO</td>
+</tr>
+<tr class="even">
+<td align="left">FORD</td>
+<td align="left">B-MAX ZETEC NAVIGATOR</td>
+</tr>
+<tr class="odd">
+<td align="left">FORD</td>
+<td align="left">B-MAX ZETEC NAVIGATOR AUTO</td>
+</tr>
+<tr class="even">
+<td align="left">FORD</td>
+<td align="left">B-MAX ZETEC NAVIGATOR TDCI</td>
+</tr>
+<tr class="odd">
+<td align="left">FORD</td>
+<td align="left">B-MAX ZETEC RED EDITION</td>
+</tr>
+<tr class="even">
+<td align="left">FORD</td>
+<td align="left">B-MAX ZETEC RED EDITION AUTO</td>
+</tr>
+<tr class="odd">
+<td align="left">FORD</td>
+<td align="left">B-MAX ZETEC SILVER EDITION</td>
+</tr>
+<tr class="even">
+<td align="left">FORD</td>
+<td align="left">B-MAX ZETEC SILVER EDITION A</td>
+</tr>
+<tr class="odd">
+<td align="left">FORD</td>
+<td align="left">B-MAX ZETEC TDCI</td>
+</tr>
+<tr class="even">
+<td align="left">FORD</td>
+<td align="left">B-MAX ZETEC TURBO</td>
+</tr>
+<tr class="odd">
+<td align="left">FORD</td>
+<td align="left">B-MAX ZETEC WHITE EDITION</td>
+</tr>
+<tr class="even">
+<td align="left">FORD</td>
+<td align="left">B-MAX ZETEC WHITE EDITION AUTO</td>
+</tr>
+</tbody>
+</table>
 <p>When we consider Car models, should we group similar models together, or consider them seperate? If we don’t group them, a popular car model with many different sub-models may appear less popular that it is overall.</p>
 <p>For our purposes, we will group them together the best we can. This should gives us a more representative picture of car model popularity. The downside is that our grouping is arbitary. THe strategy I’ve taken is to split the strings on the first space, and take the first chunk. This works for the majority of cases, but still misses some.</p>
-<pre class="r"><code># helper function
+<pre class="r"><code># helper function to split Model on the first &quot; &quot; and extract the first chunk
 simplify_model &lt;- function(model) {
   split_list &lt;- stringr::str_split(model, &quot; &quot;) %&gt;% `[[`(1)
   
   split_list[[1]]
 }</code></pre>
-<pre class="r"><code>tidy_cars_uk_2017_q2 %&gt;%
+<pre class="r"><code>tidy_cars %&gt;% 
+  filter(Year == 2017, Quarter == 2, Region == &quot;UK&quot;) %&gt;%
   mutate(simple_model = map_chr(Model, ~ simplify_model(.x))) %&gt;%
   group_by(Make, simple_model) %&gt;%
   summarise(Count = sum(Count)) %&gt;% 
@@ -92,5 +792,5 @@ simplify_model &lt;- function(model) {
          subtitle = &quot;Ford, Vauxhall and Volkswagen are the most popular makes&quot;) +
     coord_flip() </code></pre>
 <pre><code>## Selecting by Count</code></pre>
-<p><img src="/post/2017-10-10-what-s-the-most-popular-car-in-the-uk_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/post/2017-10-10-what-s-the-most-popular-car-in-the-uk_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
