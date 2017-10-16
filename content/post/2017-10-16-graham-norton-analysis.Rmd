@@ -1,0 +1,141 @@
+---
+title: Graham Norton's Guests
+author: Connor Kirkpatrick
+date: '2017-10-16'
+slug: graham-norton-s-guests
+categories: []
+tags: []
+
+---
+
+# The Guests of the Graham Norton Show
+
+Sick, lying on the sofa trying to pass an evening. I found myself in desperate need of something easy to watch as I waited for the headache, sore throat and fever to leave me. Of the shows  I did want to watch, all are shows I watch with my girlfriend. Even sick, I don't think I could get away with that level of betrayl!
+
+So I put of Graham Norton. As my girlfriend describes it, "It's okay if you miss a bit". Perfect for when you're half dozing.
+
+Nicole Kidman was the first guest on this weeks show. At the start, she says "I think I've been on here the most of anyone". That was like drugs to a sniffer dog, even to my tired mind. Now that I'm feeling a little better, let's see if we can answer it.
+
+[Wikipedia has a page detailing every episode and it's guests](https://en.wikipedia.org/wiki/List_of_The_Graham_Norton_Show_episodes). We can extract the information from this to get our data for analysis.
+
+
+
+```{r}
+library(rvest)
+library(purrr)
+library(dplyr)
+library(stringr)
+library(tidyr)
+library(ggplot2)
+library(lubridate)
+
+page <- read_html("https://en.wikipedia.org/wiki/List_of_The_Graham_Norton_Show_episodes")
+
+#list all of the selectors
+selector_guests <- ".summary"
+selector_episode_no <- ".vevent td:nth-child(2)"
+selector_overall_episode_no <- ".vevent th"
+selector_air_date <- ".vevent td:nth-child(4)"
+
+selectors <- c(air_date = selector_air_date, 
+               guests = selector_guests, 
+               episode_no = selector_episode_no, 
+               overall_episode_no = selector_overall_episode_no)
+
+# Create general function to extract text from page
+extract_graham_norton <- function(site, selector) {
+  site %>% html_nodes(selector) %>% html_text()
+}
+
+lists_mania <- map_df(selectors, ~extract_graham_norton(page, .x))
+
+df <- bind_cols(lists_mania)
+
+head(df)
+```
+
+
+We have the data in it's rough form, but we'll need to extract the names into something we can work with. Currently they are in the form of "guest1, guest2, ... and guest3". We'll need to split the string on  `","` and `"and"`, then unnest our new datadframe to create a record for every guest on the show
+
+```{r}
+tidy_df <- df %>%
+  filter(guests != "Compilation show") %>%
+  mutate(air_date_tidy = str_extract(air_date, "(.{1,2}\\W[A-z]+\\W\\d{4})") %>% dmy(),
+         guests = str_split(guests, ",|\\band\\b")) %>%
+  tidyr::unnest() %>%
+  mutate(guests = str_to_lower(guests) %>% str_replace_all("pilot|\\(|\\)", "") %>% str_trim())
+
+#filename <- paste("output-data/", "graham-norton-guests_", Sys.Date(), ".csv", sep = "")
+#write.csv(tidy_df, file = filename)
+
+head(tidy_df)
+```
+
+Our data is now fit for purpose. Is Nicole Kidman the most common guest on the show? Let's check the top 5
+
+
+```{r}
+
+tidy_df %>%
+  count(guests) %>%
+  arrange(desc(n)) %>%
+  top_n(5, n)
+
+
+```
+
+She's no where near! How many times has she been on the show?
+
+```{r}
+tidy_df %>%
+  filter(guests =="nicole kidman") %>%
+  count()
+
+
+```
+
+
+
+## Bonus
+
+
+### Histogram of Guest frequency
+```{r}
+tidy_df %>%
+  count(guests) %>%
+  ggplot(aes(x = n)) + geom_histogram(binwidth = 1)
+
+```
+
+
+### Number of distinct Guests
+
+```{r}
+nrow(tidy_df)
+
+tidy_df %>%
+  mutate(guests = str_trim(guests) %>% str_to_lower()) %>%
+  distinct(guests) %>%
+  count()
+```
+
+### Number of Guests Per Epidsode
+
+```{r}
+tidy_df %>%
+  count(overall_episode_no) %>%
+  arrange(desc(n))
+
+tidy_df %>%
+  filter(overall_episode_no == 206)
+
+
+tidy_df %>%
+  count(overall_episode_no) %>%
+  ggplot(aes(x = overall_episode_no, y = n)) + geom_point()
+
+
+tidy_df %>%
+  count(air_date_tidy) %>%
+  ggplot(aes(x = air_date_tidy, y = n)) + geom_point()
+```
