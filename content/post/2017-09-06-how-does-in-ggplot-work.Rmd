@@ -8,13 +8,14 @@ tags:
   - ggplot
 ---
 
-I am a big fan of `ggplot2`. As one of the most popular R packages, I'm clearly not alone. As well as making great plots, it's given me a deeper concept of what a plot is, and how data maps to a geom (in gg terms).
+I am a big fan of `ggplot2`. As one of the most popular R packages, I'm clearly not alone. As well as making great plots, it's given me a deeper concept of what a plot is, and to use ggplot terms, how data maps to a geom.
 
-One of the most recognisable parts of the package is the concept of adding layers to plots. We'll use the `steak_survey` dataset from the `fivethirtyeight` package. (Check out their website for some interesting data related stories!)
+One of the most recognisable parts of the package is the concept of adding layers to plots. We'll use the `steak_survey` dataset from the `fivethirtyeight` package. ([Check out their website](http://fivethirtyeight.com/) for some interesting data related stories!)
 
 
+As shown below, the code to create a plot literally adds layers, using `+`. But how does the `+` work? We're not adding numbers.. so what magic is going on? It seems so intuitive that it's only on a second glance do we realise that this isn't usual behaviour!
 
-```{r firstplot}
+```{r firstplot, warning=FALSE}
 library(ggplot2)
 library(fivethirtyeight)
 
@@ -26,9 +27,6 @@ ggplot(steak, aes(region, steak_prep, col = steak_prep)) + geom_jitter() + coord
 ```
 
 
-The code to create this plot literally adds layers, using `+`. But how does the `+` work? It's not a number.., so what magic is going on? Can we remove layers with `-`?
-
-
 To get our answer, there are two parts to understand. 
 
 ## Part One - What exactly is `+`?
@@ -38,34 +36,33 @@ It seems pretty obvious. Everyone will recognise the `+` symbol from an early ag
 ```{r}
 
 1 + 2
-# 3
 ```
 
-`+` is in fact, just another function. The ability to perform `x + y` is syntactic sugar for the language. It's much easier than typing it's functional form as shown in the example below.
+`+` is in fact, just another function. The ability to perform `x + y` is syntactic sugar for the language. It's much easier than typing it's functional form, shown in the example below.
 
 ```{r}
-class(`+`)
-
-1 + 2
-
 `+`(1, 2)
 
+
+class(`+`)
 ```
 
-So when we call `ggplot() + geom_*`, we're actually just calling another function like any other. We could recreate our above graph with the code below, as it's equivalent (apart from the missing `coord_flip`).
+So when we call `ggplot() + geom_jitter()`, `+` is acting as a function like any other. We could recreate our above graph with the code below, as it's equivalent (apart from the missing `coord_flip`. Sorry about those titles!).
 
 ```{r secondplot}
 `+`(ggplot(steak, aes(region, steak_prep, col = steak_prep)), geom_jitter())
 
 ```
 
-So that explains what `+` is, but we still don't know how `R` knows what the sum of a `ggplot() + geom_*` call is.
+So that explains what `+` is, but how does `R` know what the sum of `ggplot() + geom_jitter` is? 
+
+Well, onto the next part!
 
 ## Part Two - Generic Functions
 
-To get out answer, we'll take a small detour along the way.
+To get out answer, we need to take a small detour.
 
-Let's look at `print()`
+Let's take a look at `print()`
 
 ```{r}
 print("abcdef") # works as expected
@@ -88,7 +85,10 @@ As you can see, the time, is not strictly a time. It's actually a double, counti
 ```{r}
 print(as.numeric(time)) # That's what it actually is
 ```
-So how does it know to print something else? The answer- Generic functions. When you call print, a bit more goes on behind the scenes that you might initially realise. `print` is known as a generic method. Depending on the class of the object is it trying to print, a different print function will be called! You can see all of the methods for print using the `methods()` function.
+
+So how does it know to print something else? The answer- Generic functions. 
+
+When you call print, a bit more goes on behind the scenes than you might initially realise. `print` is known as a generic method. Depending on the class of the object is it trying to print, a different print function will be called! You can see all of the methods for print using the `methods()` function.
 
 ```{r}
 typeof(print)
@@ -98,11 +98,11 @@ length(methods(print))
 
 ```
 
-When you print the time, it checks to see the class of the object. Our time object has the classes of `POSIXct` and `POSIXt`. It then calls the `print.POSIXct()` method, to nicely format out time.
+When you print the time, it checks to see the class of the object. As our time object has the classes of `POSIXct` and `POSIXt`. It  searches for the `print.POSIXct()` method, to nicely format out time. If it couldn't find a `print.POSIXct()` method, it would look at the next class, `POSIXt`. If it still cannot find a method, it will use the `print.default()` method.
 
 ### But what does this have to do with `+`?
 
-You may have already made the leap, but as we discussed earlier, `+` is just another function. As such, we could assign it another method. In this case, it's as below.
+You may have already made the leap, but as we discussed earlier, `+` is just another function. As such, we could assign it another method to it! In this case, it's as below.
 
 ```{r}
 
@@ -111,9 +111,13 @@ methods(`+`)
 # Note +.gg* - This is the method we are after!
 ```
 
-So in summary, ggplot2 clever identifies that `+` is a function, and then assigns it a new method, which is then uses to create beautiful plots! 
+What exactly it does is the content of another post.
+
+
+In summary, `+()` is a function. `ggplot2` cleverly defines a new method for `+()`, which is then uses to allow the layering ability that we have in ggplot! 
 
 For a bit more information, check out the following
 
 1. [The help page for the ggplot `+` method](http://ggplot2.tidyverse.org/reference/gg-add.html). 
 1. For more about generic functions, check out [Advanced R, by Hadley Wickham](http://adv-r.had.co.nz/),  who also authored the `ggplot` package!
+1. It appears that Hadley is making a example out of this in his [2nd edition of Adv-R](https://adv-r.hadley.nz) (though I cannot find the section again)
