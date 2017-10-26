@@ -20,7 +20,7 @@ Nicole Kidman was the first guest on this weeks show. At the start, she says "I 
 
 
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 library(rvest)
 library(purrr)
 library(dplyr)
@@ -55,14 +55,23 @@ head(df)
 ```
 
 
-We have the data in it's rough form, but we'll need to extract the names into something we can work with. Currently they are in the form of "guest1, guest2, ... and guest3". We'll need to split the string on  `","` and `"and"`, then unnest our new datadframe to create a record for every guest on the show
+We have the data in it's rough form, but we'll need to extract the names into something we can work with. Currently they are in the form of `"guest1, guest2, ..., guest(n-1) and guest(n)"`. We'll need to split the string on  `","` and `"and"`, then unnest our new dataframe to create a record for every guest appearance on the show.
 
-```{r}
+```{r warning=F, message=F}
 tidy_df <- df %>%
+  
+  #Remove "compilation show episodes. These have no guests"
   filter(guests != "Compilation show") %>%
+  
+  # Extract the air date and parse it. Wikipedia has a strange format for these dates
   mutate(air_date_tidy = str_extract(air_date, "(.{1,2}\\W[A-z]+\\W\\d{4})") %>% dmy(),
+         
+         # Split the listing the guests on "," or "and"
          guests = str_split(guests, ",|\\band\\b")) %>%
+  
   tidyr::unnest() %>%
+  
+  # Tidy up the names so that they are in a uniform format
   mutate(guests = str_to_lower(guests) %>% str_replace_all("pilot|\\(|\\)", "") %>% str_trim())
 
 #filename <- paste("output-data/", "graham-norton-guests_", Sys.Date(), ".csv", sep = "")
@@ -103,18 +112,30 @@ tidy_df %>%
 ```{r}
 tidy_df %>%
   count(guests) %>%
-  ggplot(aes(x = n)) + geom_histogram(binwidth = 1)
+  ggplot(aes(x = n)) + geom_bar() + labs(x = "Occurence", y = "Frequency", title = "A barchart to show the number of times each guest has appeared on the show ", subtitle = "Most guests only appear once")
+
+
+tidy_df %>%
+  count(guests) %>%
+  group_by(n) %>%
+  summarise(count = n())
+  
 
 ```
 
 
-### Number of distinct Guests
+### Number of distinct guests
+
+How many guests has Graham Norton had?
+
+Graham has had `{r} nrow(tidy_df)` guest appearances. How many of these were distinct guests have made an appearance?
 
 ```{r}
+# Total Guest appearances
 nrow(tidy_df)
 
+# Distinct number of guests
 tidy_df %>%
-  mutate(guests = str_trim(guests) %>% str_to_lower()) %>%
   distinct(guests) %>%
   count()
 ```
@@ -124,18 +145,26 @@ tidy_df %>%
 ```{r}
 tidy_df %>%
   count(overall_episode_no) %>%
-  arrange(desc(n))
+  arrange(desc(n)) %>%
+  top_n(10, wt = n)
+```
+
+What's so special about epidsode 206? It appears to be a New Years Eve special 2013
+```{r}
 
 tidy_df %>%
-  filter(overall_episode_no == 206)
+  filter(overall_episode_no == 206) 
+```
 
 
+```{r}
 tidy_df %>%
-  count(overall_episode_no) %>%
-  ggplot(aes(x = overall_episode_no, y = n)) + geom_point()
+  group_by(overall_episode_no) %>%
+  count() %>% 
+  ungroup() %>%
+  summarise(mean_no_of_guests = mean(n),
+            median_no_of_guests = median(n),
+            max_no_of_guests = max(n),
+            min_no_of_guests = min(n))
 
-
-tidy_df %>%
-  count(air_date_tidy) %>%
-  ggplot(aes(x = air_date_tidy, y = n)) + geom_point()
 ```

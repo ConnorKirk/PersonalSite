@@ -16,40 +16,15 @@ tags: []
 <p>So I put of Graham Norton. As my girlfriend describes it, “It’s okay if you miss a bit”. Perfect for when you’re half dozing.</p>
 <p>Nicole Kidman was the first guest on this weeks show. At the start, she says “I think I’ve been on here the most of anyone”. That was like drugs to a sniffer dog, even to my tired mind. Now that I’m feeling a little better, let’s see if we can answer it.</p>
 <p><a href="https://en.wikipedia.org/wiki/List_of_The_Graham_Norton_Show_episodes">Wikipedia has a page detailing every episode and it’s guests</a>. We can extract the information from this to get our data for analysis.</p>
-<pre class="r"><code>library(rvest)</code></pre>
-<pre><code>## Warning: package &#39;rvest&#39; was built under R version 3.3.2</code></pre>
-<pre><code>## Loading required package: xml2</code></pre>
-<pre><code>## Warning: package &#39;xml2&#39; was built under R version 3.3.3</code></pre>
-<pre class="r"><code>library(purrr)</code></pre>
-<pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.3.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;purrr&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:rvest&#39;:
-## 
-##     pluck</code></pre>
-<pre class="r"><code>library(dplyr)</code></pre>
-<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.3.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(stringr)</code></pre>
-<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.3.3</code></pre>
-<pre class="r"><code>library(tidyr)</code></pre>
-<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.3.3</code></pre>
-<pre class="r"><code>library(ggplot2)</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.3.3</code></pre>
-<pre class="r"><code>library(lubridate)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;lubridate&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:base&#39;:
-## 
-##     date</code></pre>
-<pre class="r"><code>page &lt;- read_html(&quot;https://en.wikipedia.org/wiki/List_of_The_Graham_Norton_Show_episodes&quot;)
+<pre class="r"><code>library(rvest)
+library(purrr)
+library(dplyr)
+library(stringr)
+library(tidyr)
+library(ggplot2)
+library(lubridate)
+
+page &lt;- read_html(&quot;https://en.wikipedia.org/wiki/List_of_The_Graham_Norton_Show_episodes&quot;)
 
 #list all of the selectors
 selector_guests &lt;- &quot;.summary&quot;
@@ -83,15 +58,24 @@ head(df)</code></pre>
 ## 6    22 March 2007 (2007-03-22)
 ## # ... with 3 more variables: guests &lt;chr&gt;, episode_no &lt;chr&gt;,
 ## #   overall_episode_no &lt;chr&gt;</code></pre>
-<p>We have the data in it’s rough form, but we’ll need to extract the names into something we can work with. Currently they are in the form of “guest1, guest2, … and guest3”. We’ll need to split the string on <code>&quot;,&quot;</code> and <code>&quot;and&quot;</code>, then unnest our new datadframe to create a record for every guest on the show</p>
+<p>We have the data in it’s rough form, but we’ll need to extract the names into something we can work with. Currently they are in the form of <code>&quot;guest1, guest2, ..., guest(n-1) and guest(n)&quot;</code>. We’ll need to split the string on <code>&quot;,&quot;</code> and <code>&quot;and&quot;</code>, then unnest our new dataframe to create a record for every guest appearance on the show.</p>
 <pre class="r"><code>tidy_df &lt;- df %&gt;%
+  
+  #Remove &quot;compilation show episodes. These have no guests&quot;
   filter(guests != &quot;Compilation show&quot;) %&gt;%
+  
+  # Extract the air date and parse it. Wikipedia has a strange format for these dates
   mutate(air_date_tidy = str_extract(air_date, &quot;(.{1,2}\\W[A-z]+\\W\\d{4})&quot;) %&gt;% dmy(),
+         
+         # Split the listing the guests on &quot;,&quot; or &quot;and&quot;
          guests = str_split(guests, &quot;,|\\band\\b&quot;)) %&gt;%
+  
   tidyr::unnest() %&gt;%
-  mutate(guests = str_to_lower(guests) %&gt;% str_replace_all(&quot;pilot|\\(|\\)&quot;, &quot;&quot;) %&gt;% str_trim())</code></pre>
-<pre><code>## Warning: package &#39;bindrcpp&#39; was built under R version 3.3.3</code></pre>
-<pre class="r"><code>#filename &lt;- paste(&quot;output-data/&quot;, &quot;graham-norton-guests_&quot;, Sys.Date(), &quot;.csv&quot;, sep = &quot;&quot;)
+  
+  # Tidy up the names so that they are in a uniform format
+  mutate(guests = str_to_lower(guests) %&gt;% str_replace_all(&quot;pilot|\\(|\\)&quot;, &quot;&quot;) %&gt;% str_trim())
+
+#filename &lt;- paste(&quot;output-data/&quot;, &quot;graham-norton-guests_&quot;, Sys.Date(), &quot;.csv&quot;, sep = &quot;&quot;)
 #write.csv(tidy_df, file = filename)
 
 head(tidy_df)</code></pre>
@@ -110,16 +94,17 @@ head(tidy_df)</code></pre>
   count(guests) %&gt;%
   arrange(desc(n)) %&gt;%
   top_n(5, n)</code></pre>
-<pre><code>## # A tibble: 7 x 2
+<pre><code>## # A tibble: 8 x 2
 ##             guests     n
 ##              &lt;chr&gt; &lt;int&gt;
 ## 1    ricky gervais    10
 ## 2     miranda hart     9
-## 3 daniel radcliffe     8
-## 4      dawn french     8
-## 5   jack whitehall     8
-## 6     james mcavoy     8
-## 7      john bishop     8</code></pre>
+## 3  dame judi dench     8
+## 4 daniel radcliffe     8
+## 5      dawn french     8
+## 6   jack whitehall     8
+## 7     james mcavoy     8
+## 8      john bishop     8</code></pre>
 <p>She’s no where near! How many times has she been on the show?</p>
 <pre class="r"><code>tidy_df %&gt;%
   filter(guests ==&quot;nicole kidman&quot;) %&gt;%
@@ -134,13 +119,31 @@ head(tidy_df)</code></pre>
 <h3>Histogram of Guest frequency</h3>
 <pre class="r"><code>tidy_df %&gt;%
   count(guests) %&gt;%
-  ggplot(aes(x = n)) + geom_histogram(binwidth = 1)</code></pre>
+  ggplot(aes(x = n)) + geom_bar() + labs(x = &quot;Occurence&quot;, y = &quot;Frequency&quot;, title = &quot;A barchart to show the number of times each guest has appeared on the show &quot;, subtitle = &quot;Most guests only appear once&quot;)</code></pre>
 <p><img src="/post/2017-10-16-graham-norton-analysis_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>tidy_df %&gt;%
+  count(guests) %&gt;%
+  group_by(n) %&gt;%
+  summarise(count = n())</code></pre>
+<pre><code>## # A tibble: 10 x 2
+##        n count
+##    &lt;int&gt; &lt;int&gt;
+##  1     1   463
+##  2     2   163
+##  3     3    71
+##  4     4    29
+##  5     5    14
+##  6     6    15
+##  7     7     1
+##  8     8     6
+##  9     9     1
+## 10    10     1</code></pre>
 </div>
 <div id="number-of-distinct-guests" class="section level3">
-<h3>Number of distinct Guests</h3>
+<h3>Number of distinct guests</h3>
+<p>How many guests has Graham Norton had?</p>
 <pre class="r"><code>nrow(tidy_df)</code></pre>
-<pre><code>## [1] 1350</code></pre>
+<pre><code>## [1] 1352</code></pre>
 <pre class="r"><code>tidy_df %&gt;%
   mutate(guests = str_trim(guests) %&gt;% str_to_lower()) %&gt;%
   distinct(guests) %&gt;%
@@ -155,7 +158,7 @@ head(tidy_df)</code></pre>
 <pre class="r"><code>tidy_df %&gt;%
   count(overall_episode_no) %&gt;%
   arrange(desc(n))</code></pre>
-<pre><code>## # A tibble: 326 x 2
+<pre><code>## # A tibble: 327 x 2
 ##    overall_episode_no     n
 ##                 &lt;chr&gt; &lt;int&gt;
 ##  1                206    14
@@ -164,11 +167,11 @@ head(tidy_df)</code></pre>
 ##  4                171     8
 ##  5                313     8
 ##  6                240     7
-##  7                246     7
-##  8                298     7
-##  9                103     6
-## 10                135     6
-## # ... with 316 more rows</code></pre>
+##  7                298     7
+##  8                103     6
+##  9                135     6
+## 10                189     6
+## # ... with 317 more rows</code></pre>
 <pre class="r"><code>tidy_df %&gt;%
   filter(overall_episode_no == 206)</code></pre>
 <pre><code>## # A tibble: 14 x 5
