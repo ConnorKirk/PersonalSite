@@ -74,7 +74,7 @@ tidy_cars %>%
   labs(x = "Make", y = "Count", 
        title = "The 30 most popular car makes in the UK as of Q2 2017", 
        subtitle = "Ford, Vauxhal and Volkswagen are significantly more popular than other makes") +
-  coord_flip()
+  coord_flip() + scale_y_continuous(labels = scales::comma)
     
 ```
 
@@ -90,9 +90,9 @@ tidy_cars %>%
   knitr::kable()
 ```
 
-When we consider Car models, should we group similar models together, or consider them seperate? If we don't group them, a popular car model with many different sub-models may appear less popular that it is overall.
+When we consider Car models, should we group similar models together, or consider them separate? If we don't group them, a popular car model with many different sub-models may appear less popular that it is overall.
 
-For our purposes, we will group them together the best we can. This should gives us a more representative picture of car model popularity. The downside is that our grouping is arbitary. THe strategy I've taken is to split the strings on the first space, and take the first chunk. This works for the majority of cases, but still misses some.
+For our purposes, we will group them together the best we can. This should gives us a more representative picture of car model popularity. The downside is that our grouping is arbitary. The strategy I've taken is to split the strings on the first space, and take the first chunk. This works for the majority of cases, but still misses some.
 
 ```{r}
 
@@ -105,7 +105,7 @@ simplify_model <- function(model) {
 
 ```
 
-```{r}
+```{r popular_makes}
 
 tidy_cars %>% 
   filter(Year == 2017, Quarter == 2, Region == "UK") %>%
@@ -113,9 +113,10 @@ tidy_cars %>%
   group_by(Make, simple_model) %>%
   summarise(Count = sum(Count)) %>% 
   ungroup() %>%
-  top_n(25) %>%
+  top_n(25, Count) %>%
   ggplot(aes(x = (reorder(simple_model, Count)), y = Count, fill = Make)) + 
     geom_bar(stat = "identity") + 
+    scale_y_continuous(labels = scales::comma) +
     labs(x = "Model",
          y = "Count", 
          title = "The most popular car makes as of Q2 2017", 

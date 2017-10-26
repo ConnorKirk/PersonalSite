@@ -645,7 +645,7 @@ tidy_cars &lt;- car_data %&gt;%
   labs(x = &quot;Make&quot;, y = &quot;Count&quot;, 
        title = &quot;The 30 most popular car makes in the UK as of Q2 2017&quot;, 
        subtitle = &quot;Ford, Vauxhal and Volkswagen are significantly more popular than other makes&quot;) +
-  coord_flip()</code></pre>
+  coord_flip() + scale_y_continuous(labels = scales::comma)</code></pre>
 <p><img src="/post/2017-10-10-what-s-the-most-popular-car-in-the-uk_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <div id="most-popular-car-models-by-manufacturer" class="section level1">
 <h1>Most popular car models (by Manufacturer)</h1>
@@ -769,8 +769,8 @@ tidy_cars &lt;- car_data %&gt;%
 </tr>
 </tbody>
 </table>
-<p>When we consider Car models, should we group similar models together, or consider them seperate? If we don’t group them, a popular car model with many different sub-models may appear less popular that it is overall.</p>
-<p>For our purposes, we will group them together the best we can. This should gives us a more representative picture of car model popularity. The downside is that our grouping is arbitary. THe strategy I’ve taken is to split the strings on the first space, and take the first chunk. This works for the majority of cases, but still misses some.</p>
+<p>When we consider Car models, should we group similar models together, or consider them separate? If we don’t group them, a popular car model with many different sub-models may appear less popular that it is overall.</p>
+<p>For our purposes, we will group them together the best we can. This should gives us a more representative picture of car model popularity. The downside is that our grouping is arbitary. The strategy I’ve taken is to split the strings on the first space, and take the first chunk. This works for the majority of cases, but still misses some.</p>
 <pre class="r"><code># helper function to split Model on the first &quot; &quot; and extract the first chunk
 simplify_model &lt;- function(model) {
   split_list &lt;- stringr::str_split(model, &quot; &quot;) %&gt;% `[[`(1)
@@ -783,14 +783,14 @@ simplify_model &lt;- function(model) {
   group_by(Make, simple_model) %&gt;%
   summarise(Count = sum(Count)) %&gt;% 
   ungroup() %&gt;%
-  top_n(25) %&gt;%
+  top_n(25, Count) %&gt;%
   ggplot(aes(x = (reorder(simple_model, Count)), y = Count, fill = Make)) + 
     geom_bar(stat = &quot;identity&quot;) + 
+    scale_y_continuous(labels = scales::comma) +
     labs(x = &quot;Model&quot;,
          y = &quot;Count&quot;, 
          title = &quot;The most popular car makes as of Q2 2017&quot;, 
          subtitle = &quot;Ford, Vauxhall and Volkswagen are the most popular makes&quot;) +
     coord_flip() </code></pre>
-<pre><code>## Selecting by Count</code></pre>
-<p><img src="/post/2017-10-10-what-s-the-most-popular-car-in-the-uk_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="/post/2017-10-10-what-s-the-most-popular-car-in-the-uk_files/figure-html/popular_makes-1.png" width="672" /></p>
 </div>
