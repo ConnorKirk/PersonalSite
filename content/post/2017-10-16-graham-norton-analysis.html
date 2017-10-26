@@ -142,10 +142,12 @@ head(tidy_df)</code></pre>
 <div id="number-of-distinct-guests" class="section level3">
 <h3>Number of distinct guests</h3>
 <p>How many guests has Graham Norton had?</p>
-<pre class="r"><code>nrow(tidy_df)</code></pre>
+<p>Graham has had <code>{r} nrow(tidy_df)</code> guest appearances. How many of these were distinct guests have made an appearance?</p>
+<pre class="r"><code># Total Guest appearances
+nrow(tidy_df)</code></pre>
 <pre><code>## [1] 1352</code></pre>
-<pre class="r"><code>tidy_df %&gt;%
-  mutate(guests = str_trim(guests) %&gt;% str_to_lower()) %&gt;%
+<pre class="r"><code># Distinct number of guests
+tidy_df %&gt;%
   distinct(guests) %&gt;%
   count()</code></pre>
 <pre><code>## # A tibble: 1 x 1
@@ -157,8 +159,9 @@ head(tidy_df)</code></pre>
 <h3>Number of Guests Per Epidsode</h3>
 <pre class="r"><code>tidy_df %&gt;%
   count(overall_episode_no) %&gt;%
-  arrange(desc(n))</code></pre>
-<pre><code>## # A tibble: 327 x 2
+  arrange(desc(n)) %&gt;%
+  top_n(10, wt = n)</code></pre>
+<pre><code>## # A tibble: 25 x 2
 ##    overall_episode_no     n
 ##                 &lt;chr&gt; &lt;int&gt;
 ##  1                206    14
@@ -171,9 +174,10 @@ head(tidy_df)</code></pre>
 ##  8                103     6
 ##  9                135     6
 ## 10                189     6
-## # ... with 317 more rows</code></pre>
+## # ... with 15 more rows</code></pre>
+<p>What’s so special about epidsode 206? It appears to be a New Years Eve special 2013</p>
 <pre class="r"><code>tidy_df %&gt;%
-  filter(overall_episode_no == 206)</code></pre>
+  filter(overall_episode_no == 206) </code></pre>
 <pre><code>## # A tibble: 14 x 5
 ##                         air_date episode_no overall_episode_no
 ##                            &lt;chr&gt;      &lt;chr&gt;              &lt;chr&gt;
@@ -193,14 +197,17 @@ head(tidy_df)</code></pre>
 ## 14 31 December 2013 (2013-12-31)         11                206
 ## # ... with 2 more variables: air_date_tidy &lt;date&gt;, guests &lt;chr&gt;</code></pre>
 <pre class="r"><code>tidy_df %&gt;%
-  count(overall_episode_no) %&gt;%
-  ggplot(aes(x = overall_episode_no, y = n)) + geom_point()</code></pre>
-<p><img src="/post/2017-10-16-graham-norton-analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="r"><code>tidy_df %&gt;%
-  count(air_date_tidy) %&gt;%
-  ggplot(aes(x = air_date_tidy, y = n)) + geom_point()</code></pre>
-<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
-<p><img src="/post/2017-10-16-graham-norton-analysis_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+  group_by(overall_episode_no) %&gt;%
+  count() %&gt;% 
+  ungroup() %&gt;%
+  summarise(mean_no_of_guests = mean(n),
+            median_no_of_guests = median(n),
+            max_no_of_guests = max(n),
+            min_no_of_guests = min(n))</code></pre>
+<pre><code>## # A tibble: 1 x 4
+##   mean_no_of_guests median_no_of_guests max_no_of_guests min_no_of_guests
+##               &lt;dbl&gt;               &lt;int&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1          4.134557                   4               14                1</code></pre>
 </div>
 </div>
 </div>
