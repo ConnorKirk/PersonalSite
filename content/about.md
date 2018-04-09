@@ -10,6 +10,5 @@ This blog is my space for whatever crosses my mind or catches my interest. It's 
 
 All views are my own, please don't take them too seriously. 
 
-**Don't believe everything you read on the internet.**
 
-This site was created using the [**blogdown**](https://github.com/rstudio/blogdown) package by Yihui Xie.
+This site was created using the [**blogdown**](https://github.com/rstudio/blogdown) package by Yihui Xie. It uses the [Hugo](https://gohugo.io/) static site generator and is hosted on [Netlify](https://www.netlify.com/)
