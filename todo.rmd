@@ -7,11 +7,13 @@ output: html_document
 
 # To Do
 
-* Write up post on going from creating a project to deploying on netlify
+* ~Write up post on going from creating a project to deploying on netlify~
 * ~~Update about me section. See Yihui's own for a good example.~~
 * ~~Update config settings. Currently using defaults~~
 * Investigate swapping to Cocoa or Goa Hugo Theme?
 * Study Hugo further
+* Fix About me section
+* Complete Gender Pay Gap Post
 
 
 # Post Ideas
