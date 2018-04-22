@@ -98,10 +98,10 @@ head(tidy_df)</code></pre>
 ##             guests     n
 ##              &lt;chr&gt; &lt;int&gt;
 ## 1    ricky gervais    10
-## 2     miranda hart     9
-## 3  dame judi dench     8
-## 4 daniel radcliffe     8
-## 5      dawn french     8
+## 2      dawn french     9
+## 3     miranda hart     9
+## 4  dame judi dench     8
+## 5 daniel radcliffe     8
 ## 6   jack whitehall     8
 ## 7     james mcavoy     8
 ## 8      john bishop     8</code></pre>
@@ -128,15 +128,15 @@ head(tidy_df)</code></pre>
 <pre><code>## # A tibble: 10 x 2
 ##        n count
 ##    &lt;int&gt; &lt;int&gt;
-##  1     1   463
-##  2     2   163
-##  3     3    71
-##  4     4    29
-##  5     5    14
-##  6     6    15
-##  7     7     1
-##  8     8     6
-##  9     9     1
+##  1     1   477
+##  2     2   159
+##  3     3    75
+##  4     4    34
+##  5     5    15
+##  6     6    19
+##  7     7     2
+##  8     8     5
+##  9     9     2
 ## 10    10     1</code></pre>
 </div>
 <div id="number-of-distinct-guests" class="section level3">
@@ -145,7 +145,7 @@ head(tidy_df)</code></pre>
 <p>Graham has had <code>{r} nrow(tidy_df)</code> guest appearances. How many of these were distinct guests have made an appearance?</p>
 <pre class="r"><code># Total Guest appearances
 nrow(tidy_df)</code></pre>
-<pre><code>## [1] 1352</code></pre>
+<pre><code>## [1] 1427</code></pre>
 <pre class="r"><code># Distinct number of guests
 tidy_df %&gt;%
   distinct(guests) %&gt;%
@@ -153,7 +153,7 @@ tidy_df %&gt;%
 <pre><code>## # A tibble: 1 x 1
 ##       n
 ##   &lt;int&gt;
-## 1   764</code></pre>
+## 1   789</code></pre>
 </div>
 <div id="number-of-guests-per-epidsode" class="section level3">
 <h3>Number of Guests Per Epidsode</h3>
@@ -161,7 +161,7 @@ tidy_df %&gt;%
   count(overall_episode_no) %&gt;%
   arrange(desc(n)) %&gt;%
   top_n(10, wt = n)</code></pre>
-<pre><code>## # A tibble: 25 x 2
+<pre><code>## # A tibble: 27 x 2
 ##    overall_episode_no     n
 ##                 &lt;chr&gt; &lt;int&gt;
 ##  1                206    14
@@ -171,10 +171,10 @@ tidy_df %&gt;%
 ##  5                313     8
 ##  6                240     7
 ##  7                298     7
-##  8                103     6
-##  9                135     6
+##  8                345     7
+##  9                103     6
 ## 10                189     6
-## # ... with 15 more rows</code></pre>
+## # ... with 17 more rows</code></pre>
 <p>What’s so special about epidsode 206? It appears to be a New Years Eve special 2013</p>
 <pre class="r"><code>tidy_df %&gt;%
   filter(overall_episode_no == 206) </code></pre>
@@ -206,8 +206,8 @@ tidy_df %&gt;%
             min_no_of_guests = min(n))</code></pre>
 <pre><code>## # A tibble: 1 x 4
 ##   mean_no_of_guests median_no_of_guests max_no_of_guests min_no_of_guests
-##               &lt;dbl&gt;               &lt;int&gt;            &lt;dbl&gt;            &lt;dbl&gt;
-## 1          4.134557                   4               14                1</code></pre>
+##               &lt;dbl&gt;               &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1          4.148256                   4               14                1</code></pre>
 </div>
 </div>
 </div>
