@@ -1,0 +1,18 @@
+---
+title: How to include content from other projects in your blogdown website
+author: Connor Kirkpatrick
+date: '2017-10-03'
+slug: how-to-include-content-from-other-projects-in-your-blogdown-website
+categories: []
+tags:
+  - blogdown
+draft: TRUE
+---
+
+* [Link to forum post](https://community.rstudio.com/t/whats-your-blogdown-workflow-to-include-work-from-other-projects/1445)
+
+* What are the three answers
+  * Symlinks
+  * static files [Blogdown - Static files](https://bookdown.org/yihui/blogdown/static-files.html)
+  * copy paste
+  
