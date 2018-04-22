@@ -22,9 +22,8 @@ slug: what-is-apache-spark
 </div>
 <div id="examples" class="section level1">
 <h1>Examples</h1>
-<pre class="r"><code>library(sparklyr)</code></pre>
-<pre><code>## Warning: package &#39;sparklyr&#39; was built under R version 3.3.3</code></pre>
-<pre class="r"><code>library(dplyr)</code></pre>
+<pre class="r"><code>library(sparklyr)
+library(dplyr)</code></pre>
 <pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.3.3</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
@@ -35,7 +34,7 @@ slug: what-is-apache-spark
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(ggplot2)</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.3.2</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.3.3</code></pre>
 <pre class="r"><code># spark_install()
 
 sc &lt;- spark_connect(&quot;local&quot;) # connect to my local spark cluster (of one computer)</code></pre>
@@ -69,9 +68,9 @@ class(diamonds_sc)</code></pre>
 ##   .. .. .. ..- attr(*, &quot;conn_id&quot;)=&lt;externalptr&gt; 
 ##   .. ..$ monitor      :Classes &#39;sockconn&#39;, &#39;connection&#39;  atomic [1:1] 5
 ##   .. .. .. ..- attr(*, &quot;conn_id&quot;)=&lt;externalptr&gt; 
-##   .. ..$ output_file  : chr &quot;C:\\Users\\IBM_AD~1\\AppData\\Local\\Temp\\RtmpczhNYd\\file29b441615ad_spark.log&quot;
-##   .. ..$ spark_context:Classes &#39;spark_jobj&#39;, &#39;shell_jobj&#39; &lt;environment: 0x000000000bab2aa0&gt; 
-##   .. ..$ java_context :Classes &#39;spark_jobj&#39;, &#39;shell_jobj&#39; &lt;environment: 0x000000000b9e75c0&gt; 
+##   .. ..$ output_file  : chr &quot;C:\\Users\\IBM_AD~1\\AppData\\Local\\Temp\\RtmpYvXYE4\\file22dc5e2c5243_spark.log&quot;
+##   .. ..$ spark_context:Classes &#39;spark_jobj&#39;, &#39;shell_jobj&#39; &lt;environment: 0x000000000b8a7880&gt; 
+##   .. ..$ java_context :Classes &#39;spark_jobj&#39;, &#39;shell_jobj&#39; &lt;environment: 0x000000000a96d050&gt; 
 ##   .. ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;spark_connection&quot; &quot;spark_shell_connection&quot; &quot;DBIConnection&quot;
 ##   ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;src_spark&quot; &quot;src_sql&quot; &quot;src&quot;
 ##  $ ops:List of 2
@@ -121,9 +120,9 @@ diamonds_sc %&gt;%
 ##   .. .. .. ..- attr(*, &quot;conn_id&quot;)=&lt;externalptr&gt; 
 ##   .. ..$ monitor      :Classes &#39;sockconn&#39;, &#39;connection&#39;  atomic [1:1] 5
 ##   .. .. .. ..- attr(*, &quot;conn_id&quot;)=&lt;externalptr&gt; 
-##   .. ..$ output_file  : chr &quot;C:\\Users\\IBM_AD~1\\AppData\\Local\\Temp\\RtmpczhNYd\\file29b441615ad_spark.log&quot;
-##   .. ..$ spark_context:Classes &#39;spark_jobj&#39;, &#39;shell_jobj&#39; &lt;environment: 0x000000000bab2aa0&gt; 
-##   .. ..$ java_context :Classes &#39;spark_jobj&#39;, &#39;shell_jobj&#39; &lt;environment: 0x000000000b9e75c0&gt; 
+##   .. ..$ output_file  : chr &quot;C:\\Users\\IBM_AD~1\\AppData\\Local\\Temp\\RtmpYvXYE4\\file22dc5e2c5243_spark.log&quot;
+##   .. ..$ spark_context:Classes &#39;spark_jobj&#39;, &#39;shell_jobj&#39; &lt;environment: 0x000000000b8a7880&gt; 
+##   .. ..$ java_context :Classes &#39;spark_jobj&#39;, &#39;shell_jobj&#39; &lt;environment: 0x000000000a96d050&gt; 
 ##   .. ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;spark_connection&quot; &quot;spark_shell_connection&quot; &quot;DBIConnection&quot;
 ##   ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;src_spark&quot; &quot;src_sql&quot; &quot;src&quot;
 ##  $ ops:List of 4
@@ -142,13 +141,13 @@ diamonds_sc %&gt;%
 ##   .. .. .. ..$ add: logi FALSE
 ##   .. .. ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;op_group_by&quot; &quot;op_single&quot; &quot;op&quot;
 ##   .. ..$ dots:List of 1
-##   .. .. ..$ mean_price:&lt;quosure: local 00000000159938D8&gt;
+##   .. .. ..$ mean_price:&lt;quosure: local 000000000A0E9570&gt;
 ## ~mean(price)
 ##   .. .. ..- attr(*, &quot;class&quot;)= chr &quot;quosures&quot;
 ##   .. ..$ args: list()
 ##   .. ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;op_summarise&quot; &quot;op_single&quot; &quot;op&quot;
 ##   ..$ dots:List of 1
-##   .. ..$ :&lt;quosure: local 00000000159FDA60&gt;
+##   .. ..$ :&lt;quosure: local 000000000820FF50&gt;
 ## ~desc(mean_price)
 ##   ..$ args: list()
 ##   ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;op_arrange&quot; &quot;op_single&quot; &quot;op&quot;

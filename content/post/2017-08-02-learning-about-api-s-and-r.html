@@ -63,8 +63,9 @@ tags: []
 <h1>Examples</h1>
 <p>For a brief example, we will use the Star Wars API. As a starting point, check out <a href="https://swapi.co/documentation">its documentation</a>.</p>
 <p>It has a “Root” resource which we can call. The response of this provides information on the other resources available via the API.</p>
-<pre class="r"><code>library(httr)
-library(dplyr)</code></pre>
+<pre class="r"><code>library(httr)</code></pre>
+<pre><code>## Warning: package &#39;httr&#39; was built under R version 3.3.3</code></pre>
+<pre class="r"><code>library(dplyr)</code></pre>
 <pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.3.3</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
@@ -118,11 +119,6 @@ str(filmscontent, max.level = 2)</code></pre>
 <p>With the handy map function from <code>purrr</code>, we can easily pull out just the film names.</p>
 <pre class="r"><code>library(purrr)</code></pre>
 <pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.3.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;purrr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
-## 
-##     contains, order_by</code></pre>
 <pre class="r"><code>map_chr(filmscontent$results, &quot;title&quot;)</code></pre>
 <pre><code>## [1] &quot;A New Hope&quot;              &quot;Attack of the Clones&quot;   
 ## [3] &quot;The Phantom Menace&quot;      &quot;Revenge of the Sith&quot;    

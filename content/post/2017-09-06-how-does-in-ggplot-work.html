@@ -52,10 +52,10 @@ ggplot(steak, aes(region, steak_prep, col = steak_prep)) + geom_jitter() + coord
 typeof(time) # double? But it&#39;s a date-time!?</code></pre>
 <pre><code>## [1] &quot;double&quot;</code></pre>
 <pre class="r"><code>print(time) # This prints the date though..</code></pre>
-<pre><code>## [1] &quot;2017-10-24 08:50:31 BST&quot;</code></pre>
+<pre><code>## [1] &quot;2018-04-08 20:15:25 BST&quot;</code></pre>
 <p>As you can see, the time, is not strictly a time. It’s actually a double, counting the number of seconds since the Unix epoch. But when we print it, it returns a pretty date? Very odd.</p>
 <pre class="r"><code>print(as.numeric(time)) # That&#39;s what it actually is</code></pre>
-<pre><code>## [1] 1508831432</code></pre>
+<pre><code>## [1] 1523214926</code></pre>
 <p>So how does it know to print something else? The answer- Generic functions.</p>
 <p>When you call print, a bit more goes on behind the scenes than you might initially realise. <code>print</code> is known as a generic method. Depending on the class of the object is it trying to print, a different print function will be called! You can see all of the methods for print using the <code>methods()</code> function.</p>
 <pre class="r"><code>typeof(print)</code></pre>
@@ -81,7 +81,7 @@ typeof(time) # double? But it&#39;s a date-time!?</code></pre>
 <ol style="list-style-type: decimal">
 <li><a href="http://ggplot2.tidyverse.org/reference/gg-add.html">The help page for the ggplot <code>+</code> method</a>.</li>
 <li>For more about generic functions, check out <a href="http://adv-r.had.co.nz/">Advanced R, by Hadley Wickham</a>, who also authored the <code>ggplot</code> package!</li>
-<li>It appears that Hadley is making a example out of this in his <a href="https://adv-r.hadley.nz">2nd edition of Adv-R</a> (though I cannot find the section)</li>
+<li>It appears that Hadley is making a example out of this in his <a href="https://adv-r.hadley.nz">2nd edition of Adv-R</a> (though I cannot find the section again)</li>
 </ol>
 </div>
 </div>
