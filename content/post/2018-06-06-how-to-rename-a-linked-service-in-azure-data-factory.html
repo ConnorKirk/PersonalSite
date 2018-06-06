@@ -1,0 +1,39 @@
+---
+title: How to rename a linked service in Azure Data Factory
+author: Connor Kirkpatrick
+date: '2018-06-06'
+slug: how-to-rename-a-linked-service-in-azure-data-factory
+categories: []
+tags:
+  - Azure
+  - ADF
+---
+
+
+
+<div id="how-to-rename-linked-services-in-azure-data-factory" class="section level1">
+<h1>How to rename Linked Services in Azure Data Factory</h1>
+<p>If you’re reading this, you’ve probably hit the same issue I did! How do you rename a linked service in Azure Data Factory without manually updating each dataset that uses the linked service?</p>
+<p>As the time of writing, there isn’t a good solution. I’d expect the functionality to appear in the GUI tool eventually, but it’s not there yet. Here’s a way to do it.</p>
+<p>This guide assumes that you are using the following:</p>
+<ul>
+<li>ADF V2</li>
+<li>Git for VSTS connected with your ADF.</li>
+<li>You can do this without using Git. Instead of cloning the repository, export the ARM template instead. Perform the find and replace on the template and parameter file, then import it again.</li>
+<li>Be warned, this is much more messy.</li>
+<li>Are not using Azure Key Vault - There’s currently glitch that will cause your connection to error if you set a dataset to a new LinkedService using a Key Vault for connection details. There is a workaround however. Create a new linked service as specified below, but don’t use Key Vault to store the credentials. Perform upto step 6, then change your connection to use the Key Vault.</li>
+</ul>
+<div id="how-to" class="section level2">
+<h2>How to</h2>
+<ol style="list-style-type: decimal">
+<li>Create a new branch. I called mine <code>rename-linked-services</code>.</li>
+<li>Create your new linked services you wish to use in the GUI.</li>
+<li>Open this branch in your local VSTS. (You will need to connect to the git repo, clone a local version and swap to the <code>rename-linked-services</code> branch).</li>
+<li>Perform a find and replace (<code>CTRL + F</code>), searching for the linked service you wish to rename, and replacing it with the name of your newly created linked service.</li>
+<li>Delete your old linked service JSON file.</li>
+<li>Commit the changes and sync with the remote repository</li>
+<li>Open up the <code>rename-linked-services</code> branch in your ADF. Test your connection of the linked service, and run a pipeline using it.</li>
+<li>If it’s working, merge the changes into your dev branch.</li>
+</ol>
+</div>
+</div>

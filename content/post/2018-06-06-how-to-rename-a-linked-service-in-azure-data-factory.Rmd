@@ -1,0 +1,36 @@
+---
+title: How to rename a linked service in Azure Data Factory
+author: Connor Kirkpatrick
+date: '2018-06-06'
+slug: how-to-rename-a-linked-service-in-azure-data-factory
+categories: []
+tags:
+  - Azure
+  - ADF
+---
+
+# How to rename Linked Services in Azure Data Factory
+
+If you're reading this, you've probably hit the same issue I did! How do you rename a linked service in Azure Data Factory without manually updating each dataset that uses the linked service?
+
+As the time of writing, there isn't a good solution. I'd expect the functionality to appear in the GUI tool eventually, but it's not there yet. Here's a way to do it.
+
+This guide assumes that you are using the following:
+
+* ADF V2
+* Git for VSTS connected with your ADF.
+  * You can do this without using Git. Instead of cloning the repository, export the ARM template instead. Perform the find and replace on the template and parameter file, then import it again.
+  * Be warned, this is much more messy.
+* Are not using Azure Key Vault - There's currently glitch that will cause your connection to error if you set a dataset to a new LinkedService using a Key Vault for connection details. There is a workaround however. Create a new linked service as specified below, but don't use Key Vault to store the credentials. Perform upto step 6, then change your connection to use the Key Vault.
+
+
+## How to
+
+1. Create a new branch. I called mine `rename-linked-services`.
+1. Create your new linked services you wish to use in the GUI.
+2. Open this branch in your local VSTS. (You will need to connect to the git repo, clone a local version and swap to the `rename-linked-services` branch).
+3. Perform a find and replace (`CTRL + F`), searching for the linked service you wish to rename, and replacing it with the name of your newly created linked service.
+4. Delete your old linked service JSON file.
+5. Commit the changes and sync with the remote repository
+6. Open up the `rename-linked-services` branch in your ADF. Test your connection of the linked service, and run a pipeline using it.
+7. If it's working, merge the changes into your dev branch.
