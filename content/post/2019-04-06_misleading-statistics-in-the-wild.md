@@ -7,11 +7,8 @@ categories:
   - Statistics
 ---
 
-April 5th has many finance departments rushing in the UK. It's the last day of the tax year.
-In the past two years, another department has started feeling the pressure.
-Since 2017, 
-All UK companies over 250 employees must provide a report on the Gender Pay Gap within their company.
-THe lastest deadline, 2019 has just passed. Not all companies have submitted their report yet. The [Gender Pay Gap Service](https://gender-pay-gap.service.gov.uk/) provides the reports.
+April 5th has many finance departments rushing in the UK. It's the last day of the tax year. In the past two years, another department has started feeling the pressure.
+Since 2017, all UK companies over 250 employees must provide a report on the Gender Pay Gap within their company.
 
 Companies are free to report their statistics in their own format, but must cover the following:
 
@@ -34,7 +31,7 @@ According the to the Goverment page:
 This headline is a fantastic example of a misleading statistic. Taken in isolation, Sweaty Betty look like they have a large gender pay gap. How can this be for a company dedicated to supporting women?_
 
 The answer lies in the next statistic.
-Women make up 100 % of the Lower, Lower Middle and Upper Middle Quartile. They make up 96% of the Upper Quartile. The only men of the company exist in the Upper Quartile. 
+Women make up 100 % of the Lower, Lower Middle and Upper Middle Quartile. They make up 96% of the Upper Quartile. The only men at the company exist in the Upper Quartile. 
 
 The goal of the gender pay gap is to highlight the gap that exists today. No one would accuse Sweaty Betty of a gender pay gap, yet a lazy glance would raise eyebrows.
 
