@@ -4,7 +4,6 @@ languageCode = "en-us"
 title = "Connor Kirkpatrick"
 theme = "hugo-lithium-theme"
 googleAnalytics = "UA-107230293-1"
-disqusShortname = "connorkirkpatrick"
 ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 
 [permalinks]
