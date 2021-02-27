@@ -1,8 +1,13 @@
 [[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
+for = "/*"
+[headers.values]
+X-Frame-Options = "DENY"
+X-XSS-Protection = "1; mode=block"
 
-    # Force HTTPS
-    Strict-Transport-Security =  "max-age=63072000; includeSubDomains; preload"
+# Force HTTPS
+
+Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+[context.production.environment]
+HUGO_VERSION = "0.80.0"
+HUGO_ENV = "production"
+HUGO_ENABLEGITINFO = "true"
