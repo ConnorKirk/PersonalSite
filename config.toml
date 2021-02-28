@@ -22,7 +22,7 @@ name = "GitHub"
 url = "https://github.com/ConnorKirk"
 
 [params]
-description = "TODO: Write a humerous description"
+description = "TODO: Write a humourous description"
 
 # options for highlight.js (version, additional languages, and theme)
 highlightjsVersion = "9.11.0"
