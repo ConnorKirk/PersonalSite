@@ -23,6 +23,7 @@ url = "https://github.com/ConnorKirk"
 
 [params]
 description = "TODO: Write a humourous description"
+themeColor = "theme-base-09"
 
 # options for highlight.js (version, additional languages, and theme)
 highlightjsVersion = "9.11.0"
