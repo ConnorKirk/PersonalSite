@@ -2,7 +2,7 @@ baseurl = "/"
 relativeurls = true
 languageCode = "en-us"
 title = "ckp"
-theme = "hyde"
+theme = ["ckp", "hyde"]
 googleAnalytics = "UA-107230293-1"
 summaryLength = 10
 
