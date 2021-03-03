@@ -1,5 +1,5 @@
 ---
-title: "The Physics of Squash Valls"
+title: "The Physics of Squash Balls"
 date: 2019-01-20
 author: Connor Kirkpatrick
 slug: physics-of-squash-balls
