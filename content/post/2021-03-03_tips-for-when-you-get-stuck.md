@@ -73,7 +73,7 @@ I have struggled to ask for help in the past. The reasons have varied. I want to
 
 There is a lot of skill in asking a good question. If, like me, you worry you are disturbing others when asking a question, it's worth investing time in preparing your question before asking. This has an added bonus that you might even solve your own problem!
 
-[StackOverflow has an excellent page explaining [How to create a Minimal, Reproducible Example](https://stackoverflow.com/help/minimal-reproducible-example). It is well worth using this to prepare your question.
+StackOverflow has an excellent page explaining [How to create a Minimal, Reproducible Example](https://stackoverflow.com/help/minimal-reproducible-example). It is well worth using this to prepare your question.
 Following these steps can be painful. They take extra time. But it is well worth it. You may solve your own question along the way. When you do ask the question, you have made it easy for others to help you. People like answering easy questions.
 
 If you're stuck and not making progress, you should ask for help! You're never alone in solving problems.
