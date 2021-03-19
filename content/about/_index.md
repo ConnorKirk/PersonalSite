@@ -18,7 +18,7 @@ I started this site whilst trying to get my first technical job. With a bit of l
 - Creating a workshop for CloudFormation
 - Building APIs
 
-I enjoy public speaking (but still get nervous). I'm not sure that will ever go away.
+I enjoy public speaking, but still get nervous beforehand. I'm not sure that will ever go away.
 
 All views are my own, please don't take them too seriously.
 
