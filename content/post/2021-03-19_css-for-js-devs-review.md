@@ -6,6 +6,8 @@ slug: css-for-js-devs-review
 tags: []
 ---
 
+I am often curious about other people's experiences of courses. Is it useful? Is it engaging? Often, these experiences can be missing context of what the person's goals and past experience are. I wanted to write a short review of a course I am enjoying, with context of my skills and goals. Hopefully it helps someone else 🙂
+
 CSS For JS Devs is a new course aiming to help developers feel more comfortable with CSS. I am part way through the early release content, and I would strongly recommend it to other developers who would like a structured path for learning CSS.
 
 I would describe myself as an beginner/intermediate front end developer. I can use a componenet library to create a website, but I've always struggled with CSS. Debugging CSS issues comprised of searching on stack overflow, trial and error, then giving up.
