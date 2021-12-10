@@ -35,4 +35,5 @@
     {{ end -}}
 
     {{ partial "hook_head_end.html" . }}
+    <script>(function (n, i, v, r, s, c, x, z) { x = window.AwsRumClient = { q: [], n: n, i: i, v: v, r: r, c: c }; window[n] = function (c, p) { x.q.push({ c: c, p: p }); }; z = document.createElement('script'); z.async = true; z.src = s; document.head.insertBefore(z, document.getElementsByTagName('script')[0]); })('cwr', '5555fecd-f141-4c0e-9d93-c6aafc93bfb2', '1.0.0', 'us-east-1', 'https://client.rum.us-east-1.amazonaws.com/1.0.2/cwr.js', { sessionSampleRate: 1, guestRoleArn: "arn:aws:iam::801530346538:role/RUM-Monitor-us-east-1-801530346538-3350741319361-Unauth", identityPoolId: "us-east-1:caf04a30-6899-45ca-86a9-b6b3a5e9aa95", endpoint: "https://dataplane.rum.us-east-1.amazonaws.com", telemetries: ["performance", "errors", "http"], allowCookies: true, enableXRay: false });</script>
 </head>
