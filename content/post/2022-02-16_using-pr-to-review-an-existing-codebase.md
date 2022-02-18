@@ -8,6 +8,8 @@ categories:
 tags: []
 ---
 
+Sometimes it's useful to review an existing codebase. But how?
+
 ## tldr
 
 1. Create a new empty branch and add an empty commit. 
