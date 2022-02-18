@@ -6,7 +6,6 @@ slug: using-pr-to-review-an-existing-codebase
 categories:
   - linux
 tags: []
-draft: true
 ---
 
 ## tldr
