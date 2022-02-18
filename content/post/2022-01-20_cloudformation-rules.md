@@ -1,6 +1,6 @@
 ---
 title: "CloudFormation Rules"
-date: 2019-01-09
+date: 2022-01-20
 author: Connor Kirkpatrick
 slug: cloudformation-rules
 categories:

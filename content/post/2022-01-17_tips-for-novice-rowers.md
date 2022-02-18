@@ -6,7 +6,6 @@ slug: tips-for-rowing-novices
 categories:
   - rowing
 tags: []
-draft: true
 ---
 
 Here's a list of useful kit I've collected since I've started rowing. 
