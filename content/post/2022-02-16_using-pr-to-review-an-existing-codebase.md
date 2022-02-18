@@ -24,6 +24,7 @@ git switch --orphan "pr-review" && git commit -m "empty" --allow-empty
 
 Often you need to review a small existing codebase and provide feedback. 
 The tools for reviewing pull requests (aka merge request) are perfect for this, but don't work for reviewing an existing code base.
+
 Pull reqests work by comparing two branches. 
 You can create a diff of an entire codebase by creating an branch with no history to compare the codebase to.
 
