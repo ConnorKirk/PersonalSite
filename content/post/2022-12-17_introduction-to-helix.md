@@ -6,8 +6,6 @@ slug: introduction-to-helix
 tags: []
 ---
 
-# Introduction to Helix
-
 I once spent a few weeks trying to use Vim. I liked the principle of navigating and editing texts with commands.
 I gave up eventually as the amount of plugins and configuration for the experience I wanted was too high.
 It was easier to just go back to VSCode.
