@@ -21,5 +21,5 @@ This post has a few tips on things I've figured out whilst trying out Helix.
 * Configure `jj` to escape insert mode
 * Use `hx --tutor` for the tutor file.
 * Use `xd` to delete a line
-* `Alt` is option key on mac, but you probably need to update your terminal. See [gh issue)[https://github.com/helix-editor/helix/issues/2280] for a solution.
+* `Alt` is option key on mac, but you probably need to update your terminal. See [gh issue](https://github.com/helix-editor/helix/issues/2280) for a solution.
 
