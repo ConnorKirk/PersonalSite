@@ -7,7 +7,8 @@ categories:
 tags: [rowing]
 ---
 
-Peach Powerline is used for analysing the logger data. It runs on Windows.
+Peach Powerline is used for analysing the Peach systems logger data. It runs on Windows. 
+This post documents the fun of getting it to work on ARM based Macs
 It is possible to use it on Mac via a virtual machine such as via Parallels
 
 It is also possible to run on newer M1/M2 Macs. These are some notes from setting this up.
