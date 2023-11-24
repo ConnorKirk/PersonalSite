@@ -1,5 +1,5 @@
 ---
-title: "2023 11 24_using Peach Powerline on Arm Based Macs"
+title: "Using Peach Powerline on Arm Based Macs"
 date: 2023-11-24T12:00:46Z
 author: Connor Kirkpatrick
 slug: "2023-11-24_using-peach-powerline--on-arm-based-macs"
