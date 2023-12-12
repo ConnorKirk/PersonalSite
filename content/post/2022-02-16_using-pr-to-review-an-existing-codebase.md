@@ -10,6 +10,8 @@ tags: []
 
 Sometimes it's useful to review an existing codebase. But how?
 
+> :warning: This doesn't work on Github
+
 ## tldr
 
 1. Create a new empty branch and add an empty commit. 
@@ -19,6 +21,8 @@ Sometimes it's useful to review an existing codebase. But how?
 ```sh
 git switch --orphan "pr-review" && git commit -m "empty" --allow-empty
 ```
+
+
 
 ## Motivation
 
