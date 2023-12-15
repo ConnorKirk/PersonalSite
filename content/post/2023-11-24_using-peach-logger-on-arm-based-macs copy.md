@@ -10,9 +10,9 @@ tags: [rowing]
 Peach Powerline is used for analysing the Peach systems logger data. It only runs on Windows. 
 This post documents the fun of getting it to work on ARM based Macs (i.e. M1, M2, M3). 
 
-It is possible to use Powerline on Mac via a virtual machine such as via Parallels, but downloading data from the device on an ARM based Mac will not work.
+It is possible to use Powerline on Mac via a virtual machine such as via Parallels, but downloading data from the device on an ARM based Mac will not work without some additional steps
 
-It is also possible to run on newer M1/M2 Macs. These are some notes from setting this up. All of these steps should be performed within the Windows VM
+These are some notes from setting this up. All of these steps should be performed within the Windows VM
 
 1. Install Parallels and a Windows VM on your mac. Install the Powerline software if you haven't already
 2. Follow the instructions to uninstall the existing drivers on the Windows VM. [FTDI CDM Uninstaller](https://ftdichip.com/Support/Utilities/CDM_Uninst_GUI_Readme.html)
