@@ -2,21 +2,23 @@
 title: "Using Peach Powerline on Arm Based Macs"
 date: 2023-11-24T12:00:46Z
 author: Connor Kirkpatrick
-slug: "2023-11-24_using-peach-powerline--on-arm-based-macs"
+slug: "using-peach-powerline--on-arm-based-macs"
 categories:
 tags: [rowing]
 ---
 
-Peach Powerline is used for analysing the Peach systems logger data. It runs on Windows. 
-This post documents the fun of getting it to work on ARM based Macs
-It is possible to use it on Mac via a virtual machine such as via Parallels
+Peach Powerline is used for analysing the Peach systems logger data. It only runs on Windows. 
+This post documents the fun of getting it to work on ARM based Macs (i.e. M1, M2, M3). 
 
-It is also possible to run on newer M1/M2 Macs. These are some notes from setting this up.
+It is possible to use Powerline on Mac via a virtual machine such as via Parallels, but downloading data from the device on an ARM based Mac will not work.
 
-1. Install Parallels and a Windows VM
-2. When the logger is plugged in, Parallels will ask whether to connect it to your mac or the windows VM. Choose the windows VM.
-3. Download the device drivers from [FTDI Community - Windows ARM64 Driver](https://www.ftdicommunity.com/index.php?topic=753.0)
-    * Unzip the folder
+It is also possible to run on newer M1/M2 Macs. These are some notes from setting this up. All of these steps should be performed within the Windows VM
+
+1. Install Parallels and a Windows VM on your mac. Install the Powerline software if you haven't already
+2. Follow the instructions to uninstall the existing drivers on the Windows VM. [FTDI CDM Uninstaller](https://ftdichip.com/Support/Utilities/CDM_Uninst_GUI_Readme.html)
+3. When the logger is plugged in, Parallels will ask whether to connect it to your mac or the windows VM. Choose the windows VM.
+4. Download the device drivers from [FTDI Community - Windows ARM64 Driver](https://www.ftdicommunity.com/index.php?topic=753.0)
+    * Extract the folder
     * Copy the directory to `C:/` on your Windows VM. It doesn't seem to matter where abouts in this drive, but leaving it at the root seems to work.
     * It should look like `C:/CDM-v2.12.36.4-for-ARM64-Signed-Distributable`
 3. Update the FTDI device driver, following section 3.3 [FTDI Device Driver Installation](https://ftdichip.com/wp-content/uploads/2022/05/AN_396-FTDI-Drivers-Installation-Guide-for-Windows-10_11.pdf)
@@ -27,3 +29,5 @@ Things that caught me out:
 * Make sure the device is "enabled" in parallels. This seems to be the equivalent of plugging/unplugging it in your virtual machine.
 * Make sure the correct device is chosen in Powerline. For me it was COM3. It was no longer recognised as "Logger" inside the windows VM. It had a generic name
 
+
+This is a pretty niche problem, so if this guide help you, let me know! Always good to hear from fellow rowers/coaches.
