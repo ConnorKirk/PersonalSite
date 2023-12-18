@@ -3,14 +3,15 @@ title: "Using Peach Powerline on Arm Based Macs"
 date: 2023-11-24T12:00:46Z
 author: Connor Kirkpatrick
 slug: "using-peach-powerline--on-arm-based-macs"
+description: "Steps for using updating the Peach Logger drivers to work on ARM based Mac"
 categories:
 tags: [rowing]
 ---
 
 Peach Powerline is used for analysing the Peach systems logger data. It only runs on Windows. 
-This post documents the fun of getting it to work on ARM based Macs (i.e. M1, M2, M3). 
+It is possible to use Powerline on Mac via a virtual machine such as via Parallels. Downloading data from the logger on an ARM based Mac will not work without updating the logger drivers to use the ARM based drivers
+This post documents the fun of updating the logger drivers to work on ARM based Macs (i.e. M1, M2, M3).
 
-It is possible to use Powerline on Mac via a virtual machine such as via Parallels, but downloading data from the device on an ARM based Mac will not work without some additional steps
 
 These are some notes from setting this up. All of these steps should be performed within the Windows VM
 
