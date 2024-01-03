@@ -1,7 +1,6 @@
 ---
 title: "About Me"
-date: "2021-02-27T15:14:51-07:00"
-layout: single
+layout: about
 ---
 
 Hi there!
