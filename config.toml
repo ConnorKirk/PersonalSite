@@ -3,10 +3,12 @@ relativeurls = true
 languageCode = "en-us"
 title = "ckp"
 theme = ["ckp", "hyde"]
-googleAnalytics = "UA-107230293-1"
 summaryLength = 10
 
-ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
+ignoreFiles = ["\\.Rmd$", "\\.nb\\.html$", "_files$", "_cache$"]
+
+[security]
+  allowContent = [".*"]
 
 [permalinks]
 post = "/:year/:month/:day/:slug/"

@@ -1,3 +1,22 @@
+/* Figures */
+figure {
+  margin: 0 0 1.5rem;
+}
+
+figure img {
+  margin-bottom: .5rem;
+}
+
+figcaption {
+  font-size: .85rem;
+  color: #9a9a9a;
+  line-height: 1.4;
+}
+
+figcaption p {
+  margin: 0;
+}
+
 /* .sidebar-nav a:hover,
 .sidebar-nav a:focus {
   text-decoration: none;
