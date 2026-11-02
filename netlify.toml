@@ -9,4 +9,4 @@ X-XSS-Protection = "1; mode=block"
 Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
 
 [build.environment]
-HUGO_VERSION = "0.80.0"
+HUGO_VERSION = "0.169.0"

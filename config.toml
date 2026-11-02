@@ -1,6 +1,6 @@
 baseurl = "/"
 relativeurls = true
-languageCode = "en-us"
+locale = "en-us"
 title = "ckp"
 theme = ["ckp", "hyde"]
 summaryLength = 10
