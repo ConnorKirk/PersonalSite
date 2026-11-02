@@ -1,0 +1,3 @@
+{{- /* Unnumbered note in the right margin. Usage: {{< marginnote >}}The note.{{< /marginnote >}} */ -}}
+{{- $id := printf "mn-%d" .Ordinal -}}
+<label for="{{ $id }}" class="margin-toggle">&#8853;</label><input type="checkbox" id="{{ $id }}" class="margin-toggle"><span class="marginnote">{{ .Inner | strings.TrimSpace | .Page.RenderString }}</span>

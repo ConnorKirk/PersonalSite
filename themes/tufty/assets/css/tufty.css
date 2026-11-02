@@ -1,0 +1,242 @@
+/* tufty: a Hugo theme after Tufte CSS (https://edwardtufte.github.io/tufte-css/).
+   Text sits in a 55% column; sidenotes, margin notes and figure captions float
+   into the right margin. One accent colour, used rarely. */
+
+@font-face {
+  font-family: "et-book";
+  src: url("/fonts/et-book-roman-line-figures.woff") format("woff");
+  font-weight: normal; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "et-book";
+  src: url("/fonts/et-book-display-italic-old-style-figures.woff") format("woff");
+  font-weight: normal; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "et-book";
+  src: url("/fonts/et-book-bold-line-figures.woff") format("woff");
+  font-weight: bold; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "et-book-roman-old-style";
+  src: url("/fonts/et-book-roman-old-style-figures.woff") format("woff");
+  font-weight: normal; font-style: normal; font-display: swap;
+}
+
+:root {
+  --paper: #fffff8;
+  --ink: #111111;
+  --mute: #5c5c56;
+  --rule: #d8d8cc;
+  --wash: #f2f2e6;
+  --accent: #a3121f;
+  --serif: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+  --mono: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #151515;
+    --ink: #dddddd;
+    --mute: #9b9b94;
+    --rule: #34342f;
+    --wash: #1f1f1d;
+    --accent: #e8695f;
+  }
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box }
+html { font-size: 15px }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  line-height: 2rem;
+  font-variant-numeric: oldstyle-nums;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+}
+.page {
+  width: 87.5%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3.5rem 0 3rem 12.5%;
+}
+
+a { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .18em; text-decoration-color: var(--mute) }
+a:hover { color: var(--accent); text-decoration-color: var(--accent) }
+a:focus-visible, .margin-toggle:focus-visible + .sidenote { outline: 2px solid var(--accent); outline-offset: 2px }
+
+/* ---------- Site navigation ---------- */
+.site-nav { width: 55%; display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem 1.8rem; margin-bottom: 3.5rem; font-style: italic; color: var(--mute) }
+.site-nav .mark { font-style: normal; color: var(--ink); text-decoration: none; margin-right: auto; font-size: 1.6rem; letter-spacing: .02em }
+.site-nav .mark span { color: var(--accent) }
+.site-nav ul { display: flex; flex-wrap: wrap; gap: .25rem 1.8rem; list-style: none; margin: 0; padding: 0 }
+.site-nav ul a { text-decoration-color: transparent }
+.site-nav ul a:hover { text-decoration-color: var(--accent) }
+
+.site-footer { width: 55%; margin-top: 5rem; padding-top: 1rem; border-top: 1px solid var(--rule); font-size: 1.1rem; font-style: italic; color: var(--mute) }
+.site-footer p { margin: 0 }
+
+/* ---------- Headings ---------- */
+h1, h2, h3, h4 { font-weight: 400; text-wrap: balance }
+h1.title { font-size: 3.2rem; line-height: 1.1; margin: 0 0 .5rem; width: 55% }
+.subtitle { font-style: italic; color: var(--mute); font-size: 1.6rem; line-height: 1.3; margin: 0 0 3rem }
+.content h1 { font-style: italic; font-size: 2.2rem; line-height: 1.2; margin: 3rem 0 1.4rem }
+.content h2 { font-style: italic; font-size: 2rem; line-height: 1.2; margin: 2.6rem 0 1.2rem }
+.content h3 { font-style: italic; font-size: 1.7rem; line-height: 1.2; margin: 2.2rem 0 1rem }
+.content h4, .content h5, .content h6 { font-style: italic; font-size: 1.4rem; margin: 1.8rem 0 .6rem }
+
+/* ---------- Text column ---------- */
+.content { width: 55%; position: relative }
+.content p, .content ul, .content ol, .content dl { margin: 0 0 1.4rem }
+.content ul, .content ol { padding-left: 1.6rem }
+.content li { margin-bottom: .35rem }
+.content li > ul, .content li > ol { margin: .35rem 0 0 }
+.content hr { border: 0; border-top: 1px solid var(--rule); margin: 2.5rem 0 }
+.content blockquote { margin: 0 0 1.4rem; padding: 0 0 0 1.4rem; border-left: 1px solid var(--rule); font-size: 1.3rem; line-height: 1.9rem }
+.content blockquote p { margin-bottom: .8rem }
+.content blockquote footer { font-size: 1.1rem; text-align: right }
+.content img { max-width: 100%; height: auto }
+
+/* The opening line of a post in small caps, unless the post sets its own newthought. */
+.post .content:not(:has(.newthought)) > p:first-of-type::first-line { font-variant: small-caps; letter-spacing: .04em }
+.newthought { font-variant: small-caps; letter-spacing: .04em; font-size: 1.15em }
+
+.epigraph { margin: 0 0 3rem }
+.epigraph blockquote { border: 0; padding: 0; font-style: italic; font-size: 1.4rem }
+.epigraph blockquote footer { font-style: normal; text-align: right }
+.epigraph blockquote footer::before { content: "— " }
+
+.filed { width: 55%; margin: 3rem 0 0; font-style: italic; color: var(--mute); font-size: 1.2rem }
+
+/* ---------- Sidenotes and margin notes ---------- */
+.sidenote, .marginnote {
+  float: right;
+  clear: right;
+  margin-right: -60%;
+  width: 50%;
+  margin-top: .3rem;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  line-height: 1.3;
+  vertical-align: baseline;
+  position: relative;
+  font-style: normal;
+}
+.content { counter-reset: sidenote-counter }
+.sidenote-number { counter-increment: sidenote-counter }
+.sidenote-number::after, .sidenote:not(.from-footnote)::before {
+  font-family: et-book-roman-old-style, var(--serif);
+  position: relative;
+  vertical-align: baseline;
+}
+.sidenote-number::after { content: counter(sidenote-counter); font-size: 1rem; top: -.5rem; left: .1rem }
+.sidenote:not(.from-footnote)::before { content: counter(sidenote-counter) " "; font-size: 1rem; top: -.5rem }
+.from-footnote .fn-number { font-size: 1rem; position: relative; top: -.5rem; padding-right: .2rem }
+.marginfigure img { display: block; width: 100%; margin-bottom: .4rem }
+.marginfigure .caption { display: block; font-style: italic; color: var(--mute) }
+
+input.margin-toggle { display: none }
+label.margin-toggle:not(.sidenote-number) { display: none }
+label.sidenote-number { display: inline }
+
+/* Footnotes become sidenotes on wide screens (see js/sidenotes.js). */
+.has-sidenotes .footnotes { display: none }
+.footnotes { font-size: 1.1rem; line-height: 1.5; color: var(--mute) }
+
+/* ---------- Figures ---------- */
+.content figure { margin: 0 0 2rem; padding: 0; position: relative; max-width: 100% }
+.content figure img { display: block; width: 100% }
+/* Captions sit in the margin, level with the top of the figure. */
+.content figcaption {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.4;
+  font-style: italic;
+  color: var(--mute);
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  transform: translateX(110%);
+}
+.content figcaption p { margin: 0 }
+.content figure.fullwidth { width: calc(100% / .55 * .95); max-width: none }
+.content figure.fullwidth figcaption { position: static; float: none; transform: none; width: 55%; margin: .6rem 0 0 }
+
+/* ---------- Code ---------- */
+code, pre { font-family: var(--mono); font-size: 1rem; line-height: 1.45 }
+h1 code, h2 code, h3 code, h4 code, .post-list code { font-size: .8em; background: none }
+sup { line-height: 0 }
+.content :not(pre) > code { background: var(--wash); padding: .05rem .25rem; font-size: .95rem; overflow-wrap: anywhere }
+.content pre {
+  background: var(--wash);
+  padding: .8rem 1rem;
+  margin: 0 0 1.6rem;
+  overflow-x: auto;
+  width: 100%;
+}
+.content pre code { background: none; padding: 0; font-size: 1rem }
+/* Knitted R Markdown: output blocks are plain <pre> after <pre class="r">. */
+.knitted .content pre:not([class]) { background: none; padding: 0 1rem; color: var(--mute) }
+/* Chroma (Hugo fenced code), kept mostly monochrome. */
+.chroma .c, .chroma .c1, .chroma .cm, .chroma .cs, .chroma .ch, .chroma .cp, .chroma .cpf { color: var(--mute); font-style: italic }
+.chroma .s, .chroma .s1, .chroma .s2, .chroma .sb, .chroma .sc, .chroma .sd, .chroma .se, .chroma .sh, .chroma .si, .chroma .sx { color: var(--mute) }
+.chroma .k, .chroma .kd, .chroma .kn, .chroma .kr, .chroma .kc { font-weight: bold }
+.highlight pre { background: var(--wash) }
+
+/* ---------- Tables (knitted output and Markdown) ---------- */
+.content table { border-collapse: collapse; font-size: 1.1rem; line-height: 1.4; margin: 0 0 1.6rem; display: block; overflow-x: auto; max-width: 100%; font-variant-numeric: lining-nums tabular-nums }
+.content thead th { border-bottom: 1px solid var(--ink); font-weight: normal; font-style: italic; text-align: left }
+.content th, .content td { padding: .3rem 1.2rem .3rem 0 }
+.content tbody tr:last-child td { border-bottom: 1px solid var(--ink) }
+
+/* ---------- Home and listings ---------- */
+.intro { width: 55%; font-size: 1.6rem; line-height: 1.4; margin: 0 0 3rem }
+.listing .content { margin-bottom: 2rem }
+.post-list { width: 55%; display: grid; grid-template-columns: 4rem minmax(0, 1fr); column-gap: 1.6rem; margin-left: -5.6rem }
+.post-list .year { grid-column: 1; margin: 0; font-size: 1.2rem; font-style: italic; color: var(--mute); text-align: right; line-height: 2rem }
+.post-list ul { grid-column: 2; list-style: none; margin: 0 0 1.8rem; padding: 0 }
+.post-list li { margin-bottom: .7rem; line-height: 1.5 }
+.post-list li > a { text-decoration-color: transparent }
+.post-list li > a:hover { text-decoration-color: var(--accent) }
+.post-list .desc { display: block; font-size: 1.15rem; font-style: italic; color: var(--mute); line-height: 1.4 }
+.post-list code { font-size: .9em }
+.terms { width: 55%; list-style: none; padding: 0; margin: 0; columns: 2 }
+.terms li { margin-bottom: .4rem }
+.terms .count { color: var(--mute); font-size: 1.1rem; font-style: italic }
+
+/* Accent colour for inline SVG charts and highlights: class="accent" */
+.accent { color: var(--accent); fill: var(--accent); stroke: var(--accent) }
+
+/* ---------- Narrow screens ---------- */
+@media (max-width: 760px) {
+  .page { width: 100%; padding: 2rem 6% 2rem }
+  .site-nav, .content, h1.title, .filed, .intro, .post-list, .terms, .site-footer { width: 100% }
+  h1.title { font-size: 2.5rem }
+  .subtitle { font-size: 1.35rem; margin-bottom: 2rem }
+  .post-list { margin-left: 0; grid-template-columns: 3rem minmax(0, 1fr); column-gap: 1rem }
+  .terms { columns: 1 }
+
+  /* Notes collapse; tap the number or ⊕ to open one under its line. */
+  label.margin-toggle:not(.sidenote-number) { display: inline; cursor: pointer; color: var(--mute) }
+  label.sidenote-number { cursor: pointer }
+  .sidenote, .marginnote { display: none }
+  .margin-toggle:checked + .sidenote, .margin-toggle:checked + .marginnote {
+    display: block; float: left; clear: both; width: 95%; margin: 1rem 2.5%; padding-left: .8rem; border-left: 1px solid var(--rule); vertical-align: baseline; position: relative
+  }
+  .from-footnote { display: none !important }
+  .has-sidenotes .footnotes { display: block }
+
+  .content figcaption { position: static; float: none; transform: none; width: 100%; margin: .5rem 0 0 }
+  .content figure.fullwidth { width: 100% }
+  .content figure.fullwidth figcaption { width: 100% }
+}
+
+@media print {
+  .site-nav, .site-footer { display: none }
+  body { background: #fff; color: #000 }
+}

@@ -1,0 +1,8 @@
+<nav class="site-nav">
+  <a class="mark" href="{{ "/" | relURL }}">{{ site.Title }}<span>.</span></a>
+  <ul>
+    {{- range site.Menus.main }}
+    <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+    {{- end }}
+  </ul>
+</nav>

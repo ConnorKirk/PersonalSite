@@ -1,0 +1,4 @@
+{{- /* Small figure in the right margin.
+  Usage: {{< marginfigure src="/images/x.png" alt="Description" caption="Optional caption" >}} */ -}}
+{{- $id := printf "mf-%d" .Ordinal -}}
+<label for="{{ $id }}" class="margin-toggle">&#8853;</label><input type="checkbox" id="{{ $id }}" class="margin-toggle"><span class="marginnote marginfigure"><img src="{{ .Get "src" }}" alt="{{ .Get "alt" }}">{{ with .Get "caption" }}<span class="caption">{{ . | $.Page.RenderString }}</span>{{ end }}</span>
