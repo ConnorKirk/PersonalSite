@@ -2,7 +2,7 @@ baseurl = "/"
 relativeurls = true
 locale = "en-us"
 title = "ckp"
-theme = ["ckp", "hyde"]
+theme = "tufty"
 summaryLength = 10
 
 ignoreFiles = ["\\.Rmd$", "\\.nb\\.html$", "_files$", "_cache$"]
@@ -15,23 +15,23 @@ post = "/:year/:month/:day/:slug/"
 
 [[menu.main]]
 name = "About"
+weight = 1
 url = "/about/"
 [[menu.main]]
 name = "Misc"
+weight = 2
 url = "/misc/"
 [[menu.main]]
 name = "GitHub"
+weight = 3
 url = "https://github.com/ConnorKirk"
 
 [params]
 description = " "
-themeColor = "theme-base-09"
 
-# options for highlight.js (version, additional languages, and theme)
-highlightjsVersion = "9.11.0"
-highlightjsCDN = "//cdn.bootcss.com"
-highlightjsLang = ["r", "yaml"]
-highlightjsTheme = "github"
+[markup.highlight]
+noClasses = false
 
-MathJaxCDN = "//cdn.bootcss.com"
-MathJaxVersion = "2.7.1"
+[taxonomies]
+category = "categories"
+tag = "tags"

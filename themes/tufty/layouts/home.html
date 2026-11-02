@@ -1,0 +1,8 @@
+{{ define "main" }}
+<section class="home">
+  {{- with site.Params.intro }}
+  <p class="intro">{{ . | markdownify }}</p>
+  {{- end }}
+  {{ partial "post-list.html" (where site.RegularPages "Section" "post") }}
+</section>
+{{ end }}

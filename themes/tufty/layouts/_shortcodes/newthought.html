@@ -1,0 +1,2 @@
+{{- /* Small-caps opening words. Usage: {{< newthought >}}April 5th has{{< /newthought >}} the rest. */ -}}
+<span class="newthought">{{ .Inner | strings.TrimSpace }}</span>

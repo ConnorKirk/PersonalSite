@@ -1,0 +1,26 @@
+{{ define "main" }}
+<article class="post{{ if eq .File.Ext "html" }} knitted{{ end }}">
+  <header>
+    <h1 class="title">{{ .Title | markdownify }}</h1>
+    {{- if eq .Section "post" }}
+    <p class="subtitle">
+      {{- with .Params.author }}{{ . }} · {{ end -}}
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+    </p>
+    {{- end }}
+  </header>
+
+  <div class="content">
+    {{ .Content }}
+  </div>
+
+  {{- $terms := slice }}
+  {{- range .GetTerms "categories" }}{{ $terms = $terms | append . }}{{ end }}
+  {{- range .GetTerms "tags" }}{{ $terms = $terms | append . }}{{ end }}
+  {{- with $terms }}
+  <p class="filed">Filed under
+    {{- range $i, $t := . }}{{ if $i }},{{ end }} <a href="{{ $t.RelPermalink }}">{{ $t.LinkTitle | lower }}</a>{{ end }}
+  </p>
+  {{- end }}
+</article>
+{{ end }}

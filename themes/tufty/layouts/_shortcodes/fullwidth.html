@@ -1,0 +1,8 @@
+{{- /* Figure spanning the text column and the margin.
+  Usage: {{< fullwidth src="/images/x.png" alt="Description" caption="Optional caption" >}} */ -}}
+<figure class="fullwidth">
+  <img src="{{ .Get "src" }}" alt="{{ .Get "alt" }}">
+  {{- with .Get "caption" }}
+  <figcaption>{{ . | $.Page.RenderString }}</figcaption>
+  {{- end }}
+</figure>

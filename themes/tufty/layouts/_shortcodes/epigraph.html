@@ -1,0 +1,9 @@
+{{- /* Opening quotation. Usage: {{< epigraph author="Phil Karlton" >}}Quote.{{< /epigraph >}} */ -}}
+<div class="epigraph">
+  <blockquote>
+    <p>{{ .Inner | strings.TrimSpace | .Page.RenderString }}</p>
+    {{- with .Get "author" }}
+    <footer>{{ . | $.Page.RenderString }}</footer>
+    {{- end }}
+  </blockquote>
+</div>

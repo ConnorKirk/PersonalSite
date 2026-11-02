@@ -1,0 +1,14 @@
+{{/* Pages grouped by year, the year set in the left margin. Expects a page collection. */}}
+<div class="post-list">
+  {{- range .GroupByDate "2006" }}
+  <h2 class="year">{{ .Key }}</h2>
+  <ul>
+    {{- range .Pages }}
+    <li>
+      <a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
+      {{- with .Description }}<span class="desc">{{ . }}</span>{{ end }}
+    </li>
+    {{- end }}
+  </ul>
+  {{- end }}
+</div>
